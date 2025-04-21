@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zorgtechnologie in de Fysiotherapie: Een Introductie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="images/ixperium_health_logo.png" alt="iXperium Health Logo" class="logo">
+            <h1>Zorgtechnologie in de Fysiotherapie: Een Introductie</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+
+        <div class="nav-menu">
+            <ul>
+                <li><a href="#section1" class="section-link active" data-section="1">1. Introductie</a></li>
+                <li><a href="#section2" class="section-link" data-section="2">2. Technologie in Actie</a></li>
+                <li><a href="#section3" class="section-link" data-section="3">3. De Kracht van Technologie</a></li>
+                <li><a href="#section4" class="section-link" data-section="4">4. Kritisch Kijken</a></li>
+                <li><a href="#section5" class="section-link" data-section="5">5. Van Idee naar Gebruik</a></li>
+                <li><a href="#section6" class="section-link" data-section="6">6. Jij aan Zet</a></li>
+                <li><a href="#section7" class="section-link" data-section="7">7. Blijf Leren</a></li>
+                <li><a href="#section8" class="section-link" data-section="8">8. Afsluiting</a></li>
+            </ul>
+        </div>
+
+        <!-- Sectie 1: Introductie -->
+        <section id="section1" class="section active">
+            <h2>Introductie - Waarom Moet Jij Hier Iets Mee?</h2>
+            <div class="section-content">
+                <p>Als toekomstig fysiotherapeut kom je in een werkveld terecht dat volop in beweging is. De gezondheidszorg staat voor grote uitdagingen die ook jouw toekomstige werk zullen beïnvloeden:</p>
+                
+                <ul>
+                    <li><strong>Dubbele vergrijzing:</strong> We hebben meer ouderen en worden ouder, wat leidt tot een toenemende zorgvraag.</li>
+                    <li><strong>Stijgend zorggebruik en zorgkosten:</strong> Meer mensen hebben één of meer chronische aandoeningen.</li>
+                    <li><strong>Krapte op de arbeidsmarkt:</strong> Er is een groeiend tekort aan zorgprofessionals.</li>
+                    <li><strong>Focus op preventie:</strong> Er is steeds meer aandacht voor gezonde leefstijl en preventie.</li>
+                </ul>
+                
+                <p>Zorgtechnologie wordt gezien als één van de oplossingen voor deze uitdagingen. Het kan helpen om:</p>
+                
+                <ul>
+                    <li>Ziekten en zorgkosten te voorkomen</li>
+                    <li>De kwaliteit van zorg te verbeteren</li>
+                    <li>Zorg goedkoper en dichterbij aan te bieden</li>
+                </ul>
+                
+                <p>Als fysiotherapeut van de toekomst is het daarom essentieel dat je bekend bent met de mogelijkheden van zorgtechnologie en de digitale vaardigheden ontwikkelt om deze effectief in te zetten.</p>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Welke van de genoemde uitdagingen in de zorg (bv. personeelstekort, stijgende kosten, vergrijzing) verwacht jij het meest tegen te komen in je toekomstige werkveld, en waarom?</p>
+                    <textarea class="reflection-input" id="reflection1" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(1)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" disabled>Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 2: Technologie in Actie -->
+        <section id="section2" class="section">
+            <h2>Technologie in Actie - Inspirerende Voorbeelden</h2>
+            <div class="section-content">
+                <p>Laten we eens kijken naar vijf concrete voorbeelden van zorgtechnologie die nu al worden ingezet in de fysiotherapie:</p>
+                
+                <div class="tech-cards">
+                    <div class="tech-card">
+                        <img src="images/fysio_ai_logo.png" alt="Fysio.ai Logo">
+                        <h3>Fysio.ai</h3>
+                        <p><strong>Wat is het?</strong> Een AI-platform voor bewegingsanalyse dat bewegingen kan analyseren via de camera van een smartphone of tablet.</p>
+                        <p><strong>Potentie:</strong> Objectiveren van bewegingspatronen, ondersteuning bij diagnose, monitoring van voortgang op afstand.</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <img src="images/blazepod_logo.png" alt="Blazepods Logo">
+                        <h3>Blazepods</h3>
+                        <p><strong>Wat is het?</strong> Interactieve lichtpods die reageren op aanraking, voor reactietraining en gamification van oefeningen.</p>
+                        <p><strong>Potentie:</strong> Verhogen van motivatie, verbeteren van reactiesnelheid, maken van oefeningen leuker en uitdagender.</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <img src="images/corpus_vr_logo.png" alt="Corpus VR Logo">
+                        <h3>Corpus VR</h3>
+                        <p><strong>Wat is het?</strong> Virtual Reality-toepassing voor revalidatie en pijnmanagement.</p>
+                        <p><strong>Potentie:</strong> Immersieve ervaring voor afleiding bij pijn, motiverende oefenomgevingen, intensievere therapie.</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <img src="images/organon_vr_logo.png" alt="Organon VR Logo">
+                        <h3>Organon VR</h3>
+                        <p><strong>Wat is het?</strong> VR-applicatie voor het visualiseren en bestuderen van anatomie in 3D.</p>
+                        <p><strong>Potentie:</strong> Verbeteren van anatomisch inzicht, educatieve tool voor patiënten, ondersteuning bij uitleg van klachten.</p>
+                    </div>
+                    
+                    <div class="tech-card">
+                        <img src="images/physitrack_logo.png" alt="Physitrack Logo">
+                        <h3>Physitrack</h3>
+                        <p><strong>Wat is het?</strong> eHealth platform voor het maken van gepersonaliseerde thuisoefenprogramma's.</p>
+                        <p><strong>Potentie:</strong> Verhogen van therapietrouw, blended care, monitoring op afstand, efficiënter behandelproces.</p>
+                    </div>
+                </div>
+                
+                <p>Als student krijg je gratis toegang tot deze en andere technologieën via het iXperium Health. Dit is slechts een kleine greep uit wat er beschikbaar is - er zijn nog veel meer innovatieve technologieën die je kunt ontdekken!</p>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Welk van deze vijf voorbeelden lijkt jou het meest vernieuwend of interessant voor de fysiotherapie? Licht kort toe waarom.</p>
+                    <textarea class="reflection-input" id="reflection2" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(2)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 3: De Kracht van Technologie -->
+        <section id="section3" class="section">
+            <h2>De Kracht van Technologie - Mogelijke Voordelen</h2>
+            <div class="section-content">
+                <p>Zorgtechnologie kan verschillende voordelen bieden voor zowel de fysiotherapeut als de patiënt. Hier zijn enkele belangrijke voordelen:</p>
+                
+                <div class="benefits">
+                    <div class="benefit">
+                        <h3>Therapietrouw</h3>
+                        <p>Technologie kan helpen om de therapietrouw te verhogen door herinneringen, feedback en motiverende elementen.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Gamification</h3>
+                        <p>Door oefeningen in een spelvorm aan te bieden, wordt therapie leuker en motiverender voor patiënten.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Motorisch Leren</h3>
+                        <p>Directe feedback en visualisatie kunnen het motorisch leerproces versnellen en verbeteren.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Gedragsverandering</h3>
+                        <p>Technologie kan helpen bij het stimuleren en ondersteunen van duurzame gedragsverandering.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Blended Zorg</h3>
+                        <p>Combinatie van fysieke behandelingen en digitale ondersteuning voor efficiëntere zorg.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Toegankelijkheid</h3>
+                        <p>Zorg wordt toegankelijker, ook voor mensen met mobiliteits- of geografische beperkingen.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Objectiever Meten</h3>
+                        <p>Technologie kan helpen bij het objectief meten en kwantificeren van beweging en vooruitgang.</p>
+                    </div>
+                    
+                    <div class="benefit">
+                        <h3>Data-gedreven werken</h3>
+                        <p>Verzamelen en analyseren van data voor betere besluitvorming en gepersonaliseerde zorg.</p>
+                    </div>
+                </div>
+                
+                <h3>Koppel de juiste voordelen aan de juiste technologie</h3>
+                <p>Sleep elk voordeel naar de meest passende technologiecategorie:</p>
+                
+                <div class="drag-container">
+                    <div class="draggable" draggable="true" data-id="1">Verhoogde therapietrouw door dagelijkse herinneringen</div>
+                    <div class="draggable" draggable="true" data-id="2">Objectieve bewegingsanalyse voor nauwkeurige diagnose</div>
+                    <div class="draggable" draggable="true" data-id="3">Immersieve ervaring voor effectieve pijnafleiding</div>
+                </div>
+                
+                <div class="drop-targets">
+                    <div class="drop-target" data-id="1">
+                        <h4>Bewegingsanalyse-apps (zoals Fysio.ai)</h4>
+                    </div>
+                    <div class="drop-target" data-id="2">
+                        <h4>Virtual Reality (zoals Corpus VR)</h4>
+                    </div>
+                    <div class="drop-target" data-id="3">
+                        <h4>eHealth platforms (zoals Physitrack)</h4>
+                    </div>
+                </div>
+                
+                <div class="feedback" id="dragdrop-feedback"></div>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Stel je voor dat je één van deze voordelen direct zou kunnen toepassen in een stage-casus. Welk voordeel kies je en waarom?</p>
+                    <textarea class="reflection-input" id="reflection3" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(3)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 4: Kritisch Kijken -->
+        <section id="section4" class="section">
+            <h2>Kritisch Kijken - De Juiste Vragen Stellen</h2>
+            <div class="section-content">
+                <p>Hoewel zorgtechnologie veel voordelen biedt, is het belangrijk om kritisch te blijven en de juiste vragen te stellen. Hier zijn enkele belangrijke thema's om te overwegen:</p>
+                
+                <div class="critical-themes">
+                    <div class="critical-theme">
+                        <h3>Gebruiksgemak/Implementatie</h3>
+                        <p>Is de technologie gemakkelijk te gebruiken en te implementeren in de dagelijkse praktijk?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Kwaliteit Zorg</h3>
+                        <p>Verbetert de technologie daadwerkelijk de kwaliteit van zorg? Is er wetenschappelijk bewijs?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Toekomst/Personeel</h3>
+                        <p>Welke impact heeft de technologie op de rol van de fysiotherapeut en de toekomst van het beroep?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Kosten/Toegankelijkheid</h3>
+                        <p>Is de technologie betaalbaar en toegankelijk voor alle patiënten en praktijken?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Patiëntperspectief</h3>
+                        <p>Hoe ervaren patiënten de technologie? Sluit het aan bij hun behoeften en voorkeuren?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Veiligheid/Privacy</h3>
+                        <p>Is de technologie veilig en worden privacy en gegevens goed beschermd?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Interactie/Communicatie</h3>
+                        <p>Hoe beïnvloedt de technologie de interactie en communicatie tussen therapeut en patiënt?</p>
+                    </div>
+                    
+                    <div class="critical-theme">
+                        <h3>Educatie/Training</h3>
+                        <p>Welke training is nodig om de technologie effectief te kunnen gebruiken?</p>
+                    </div>
+                </div>
+                
+                <div class="mc-question">
+                    <h3>Test je kennis</h3>
+                    <p>Een fysiotherapeut overweegt een nieuwe VR-applicatie voor pijnmanagement aan te schaffen voor de praktijk. Welk kritisch thema is het MEEST relevant om als eerste te onderzoeken?</p>
+                    
+                    <ul class="mc-options">
+                        <li class="mc-option" data-id="1">Kosten/Toegankelijkheid: "Is de aanschaf en het onderhoud van deze VR-applicatie financieel haalbaar voor onze praktijk?"</li>
+                        <li class="mc-option" data-id="2">Gebruiksgemak/Implementatie: "Hoeveel tijd kost het om deze VR-applicatie te leren gebruiken en te implementeren in de dagelijkse praktijk?"</li>
+                        <li class="mc-option" data-id="3">Kwaliteit Zorg: "Is er wetenschappelijk bewijs dat deze VR-applicatie effectief is voor pijnmanagement bij de beoogde patiëntenpopulatie?"</li>
+                        <li class="mc-option" data-id="4">Patiëntperspectief: "Hoe zullen onze patiënten reageren op het gebruik van VR-technologie tijdens hun behandeling?"</li>
+                    </ul>
+                    
+                    <div class="feedback" id="mc-feedback"></div>
+                </div>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Privacy en veiligheid zijn belangrijke thema's. Welke vraag over privacy zou jij stellen voordat je een nieuwe zorg-app aan een patiënt aanbeveelt?</p>
+                    <textarea class="reflection-input" id="reflection4" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(4)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 5: Van Idee naar Gebruik -->
+        <section id="section5" class="section">
+            <h2>Van Idee naar Gebruik - Adoptie & Gedrag</h2>
+            <div class="section-content">
+                <p>Hoe komt het dat sommige technologieën snel worden omarmd, terwijl andere nooit echt doorbreken? Het Technology Acceptance Model (TAM) helpt ons begrijpen hoe mensen technologie accepteren en gebruiken.</p>
+                
+                <div class="tam-model">
+                    <img src="images/tam_model.png" alt="Technology Acceptance Model (TAM)">
+                    
+                    <div class="tam-explanation">
+                        <h3>De belangrijkste componenten van het TAM-model:</h3>
+                        <ul>
+                            <li><strong>Perceived Usefulness (PU):</strong> De mate waarin iemand gelooft dat het gebruik van een bepaald systeem zijn of haar werkprestaties zou verbeteren.</li>
+                            <li><strong>Perceived Ease of Use (PEOU):</strong> De mate waarin iemand gelooft dat het gebruik van een bepaald systeem vrij van inspanning zou zijn.</li>
+                            <li><strong>Attitude:</strong> De algemene indruk van de technologie, beïnvloed door PU en PEOU.</li>
+                            <li><strong>Behavioral Intention:</strong> De intentie om de technologie te gebruiken, beïnvloed door attitude.</li>
+                            <li><strong>Actual System Use:</strong> Het daadwerkelijke gebruik van de technologie.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p>Het TAM-model laat zien dat zowel het verwachte nut als het gebruiksgemak belangrijk zijn voor de acceptatie van technologie. Dit geldt niet alleen voor jou als fysiotherapeut, maar ook voor je patiënten.</p>
+                
+                <h3>Hoe kun je dit toepassen?</h3>
+                <p>Als fysiotherapeut kun je het TAM-model gebruiken om:</p>
+                <ul>
+                    <li>Bewuster te kiezen welke technologie je wilt gebruiken</li>
+                    <li>De acceptatie van technologie bij collega's te bevorderen</li>
+                    <li>Patiënten te helpen bij het accepteren en gebruiken van technologie</li>
+                </ul>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Denkend aan het TAM-model: wat denk jij dat voor fysiotherapeuten zwaarder weegt bij het adopteren van nieuwe technologie: het verwachte nut (Usefulness) of het gebruiksgemak (Ease of Use)? Waarom denk je dat?</p>
+                    <textarea class="reflection-input" id="reflection5" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(5)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 6: Jij aan Zet -->
+        <section id="section6" class="section">
+            <h2>Jij aan Zet - Jouw Competenties</h2>
+            <div class="section-content">
+                <p>Om effectief met zorgtechnologie te kunnen werken, heb je bepaalde competenties nodig. Het V-model brengt deze competenties in kaart en maakt onderscheid tussen basiscompetenties die iedere zorgprofessional zou moeten bezitten en verdiepende competenties voor voorlopers.</p>
+                
+                <div class="v-model">
+                    <img src="images/v_model.jpeg" alt="V-model voor digitale competenties">
+                    
+                    <div class="v-model-explanation">
+                        <h3>Basiscompetenties (de grote V)</h3>
+                        <p>Iedere fysiotherapeut:</p>
+                        <ul>
+                            <li><strong>Veranderen:</strong> Kijkt naar mogelijkheden om technologie in te zetten om het zorgproces te verbeteren</li>
+                            <li><strong>Vinden:</strong> Kan nieuwe of bestaande zorgtechnologie vinden en selecteren</li>
+                            <li><strong>Vertrouwen:</strong> Heeft en wekt vertrouwen in het nut en de veiligheid van technologie</li>
+                            <li><strong>Vaardig gebruiken:</strong> Is digitaal vaardig en zet technologie veilig en adequaat in</li>
+                            <li><strong>Vertellen:</strong> Kan de patiënt informeren en instrueren over het gebruik en nut van technologie</li>
+                        </ul>
+                        
+                        <h3>Verdiepende competenties (voor voorlopers)</h3>
+                        <p>Als voorloper kun je:</p>
+                        <ul>
+                            <li><strong>Vooroplopen:</strong> Initiëren en implementeren van technologische innovatie</li>
+                            <li><strong>Verdiepen:</strong> Actief verdiepen in technologische ontwikkelingen</li>
+                            <li><strong>Verbinden:</strong> Team, organisatie en leveranciers met elkaar verbinden</li>
+                            <li><strong>Voorlichten:</strong> Collega's adviseren en inspireren over het nut van technologie</li>
+                            <li><strong>Verbeteren:</strong> Meedenken over het verbeteren van technologie</li>
+                            <li><strong>Vervangen:</strong> Beslissen over het vervangen van technologie</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <p>Als eerstejaars student focus je eerst op het ontwikkelen van de basiscompetenties. Gedurende je opleiding kun je je verder ontwikkelen en mogelijk ook verdiepende competenties verwerven.</p>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Het V-model benadrukt verschillende competentiegebieden. Op welk gebied zou jij jezelf de komende twee jaar het meest willen ontwikkelen met betrekking tot technologie?</p>
+                    <textarea class="reflection-input" id="reflection6" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(6)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 7: Blijf Leren -->
+        <section id="section7" class="section">
+            <h2>Blijf Leren - Waar Vind Je Meer?</h2>
+            <div class="section-content">
+                <p>Er zijn verschillende betrouwbare bronnen waar je meer informatie kunt vinden over zorgtechnologie in de fysiotherapie:</p>
+                
+                <ul class="sources-list">
+                    <li><strong>Beweegtech.nl:</strong> Een e-platform specifiek voor fysio- en oefentherapeuten met informatie over ruim 250 technologieën.</li>
+                    <li><strong>Revalidatie Appstore:</strong> Een verzameling van revalidatie-apps die zijn getest volgens de landelijke richtlijnen.</li>
+                    <li><strong>GGD AppStore:</strong> Een overzicht van betrouwbare gezondheidsapps en -websites die door GGD-deskundigen zijn getest.</li>
+                    <li><strong>Zorginnovatie.nl:</strong> Platform voor zorginnovaties waar verschillende technologieën worden gepresenteerd en besproken.</li>
+                    <li><strong>Zorg van Nu:</strong> Initiatief van het ministerie van VWS dat informeert over beschikbare zorgtechnologie.</li>
+                    <li><strong>iXperium Health Catalogus:</strong> Catalogus met zorgtechnologieën, onderverdeeld in algemene technologieën en VR-toepassingen.</li>
+                </ul>
+                
+                <div class="mc-question">
+                    <h3>Test je kennis</h3>
+                    <p>Je wilt een betrouwbare gezondheidsapp aanbevelen aan een patiënt voor thuisoefeningen. Welke bron is het MEEST geschikt om te raadplegen voor een onafhankelijke beoordeling van gezondheidsapps?</p>
+                    
+                    <ul class="mc-options">
+                        <li class="mc-option" data-id="1">Beweegtech.nl</li>
+                        <li class="mc-option" data-id="2">GGD AppStore</li>
+                        <li class="mc-option" data-id="3">Zorginnovatie.nl</li>
+                        <li class="mc-option" data-id="4">iXperium Health Catalogus</li>
+                    </ul>
+                    
+                    <div class="feedback" id="mc2-feedback"></div>
+                </div>
+                
+                <div class="reflection-container">
+                    <p class="reflection-question">Bekijk de lijst met bronnen. Welke bron ga je na deze e-learning als eerste bekijken en wat hoop je daar te vinden?</p>
+                    <textarea class="reflection-input" id="reflection7" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                    <button class="btn" onclick="saveReflection(7)">Opslaan</button>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" onclick="nextSection()">Volgende</button>
+            </div>
+        </section>
+
+        <!-- Sectie 8: Afsluiting -->
+        <section id="section8" class="section">
+            <h2>Afsluiting & Jouw Overzicht</h2>
+            <div class="section-content">
+                <p>Gefeliciteerd! Je hebt de e-learning "Zorgtechnologie in de Fysiotherapie: Een Introductie" afgerond. Laten we de belangrijkste punten nog even samenvatten:</p>
+                
+                <ul>
+                    <li>Zorgtechnologie speelt een steeds belangrijkere rol in de fysiotherapie vanwege maatschappelijke uitdagingen zoals vergrijzing, stijgende zorgkosten en personeelstekorten.</li>
+                    <li>Er zijn verschillende soorten zorgtechnologie beschikbaar, zoals bewegingsanalyse-apps, virtual reality, en eHealth platforms.</li>
+                    <li>Zorgtechnologie biedt voordelen zoals verhoogde therapietrouw, objectiever meten, en blended zorg.</li>
+                    <li>Het is belangrijk om kritisch te blijven en de juiste vragen te stellen over gebruiksgemak, kwaliteit van zorg, privacy, en meer.</li>
+                    <li>Het TAM-model helpt begrijpen hoe mensen technologie accepteren en gebruiken.</li>
+                    <li>Het V-model brengt de benodigde competenties in kaart voor het werken met zorgtechnologie.</li>
+                    <li>Er zijn verschillende betrouwbare bronnen waar je meer informatie kunt vinden over zorgtechnologie.</li>
+                </ul>
+                
+                <div class="pdf-generation">
+                    <h3>Genereer je persoonlijke certificaat en overzicht</h3>
+                    <p>Vul je naam in en genereer een PDF met je certificaat en een overzicht van al je reflecties en resultaten.</p>
+                    
+                    <label for="student-name">Vul je naam in voor op het certificaat:</label>
+                    <input type="text" id="student-name" class="name-input" placeholder="Voornaam Achternaam">
+                    
+                    <div class="certificate-preview">
+                        <p>Voorbeeld van je certificaat</p>
+                        <img src="images/ixperium_health_logo.png" alt="iXperium Health Logo">
+                        <p>Certificaat van Afronding</p>
+                        <p>Uitgereikt aan: [Jouw naam]</p>
+                    </div>
+                    
+                    <button class="btn btn-yellow" onclick="generatePDF()">Genereer en download certificaat</button>
+                    
+                    <p class="small-text">Door op de knop te klikken, wordt een PDF gegenereerd met je certificaat en een overzicht van al je reflecties en resultaten. Deze PDF kun je downloaden en opslaan.</p>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-prev" onclick="prevSection()">Vorige</button>
+                <button class="btn" disabled>Volgende</button>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
