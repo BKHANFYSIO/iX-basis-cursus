@@ -5,26 +5,46 @@ const totalSections = 8;
 function updateProgress() {
     const progressPercentage = ((currentSection - 1) / (totalSections - 1)) * 100;
     document.getElementById('progress-fill').style.width = `${progressPercentage}%`;
+    document.getElementById('progress-percentage').textContent = `${Math.round(progressPercentage)}%`;
+    
+    // Update chapter points
+    document.querySelectorAll('.chapter-point').forEach((point, index) => {
+        if (index + 1 < currentSection) {
+            point.classList.add('completed');
+            point.classList.remove('active');
+        } else if (index + 1 === currentSection) {
+            point.classList.add('active');
+            point.classList.remove('completed');
+        } else {
+            point.classList.remove('completed', 'active');
+        }
+    });
 }
 
 function showSection(sectionNumber) {
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(section => {
+    // Hide all sections first
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.style.display = 'none';
         section.classList.remove('active');
     });
     
     // Show the selected section
-    document.getElementById(`section${sectionNumber}`).classList.add('active');
-    
-    // Update active link in navigation
-    document.querySelectorAll('.section-link').forEach(link => {
-        link.classList.remove('active');
-    });
-    document.querySelector(`.section-link[data-section="${sectionNumber}"]`).classList.add('active');
+    const targetSection = document.getElementById(`section${sectionNumber}`);
+    if (targetSection) {
+        targetSection.style.display = 'block';
+        targetSection.classList.add('active');
+    }
     
     // Update current section and progress
     currentSection = sectionNumber;
     updateProgress();
+    
+    // Scroll to top of the section
+    window.scrollTo({
+        top: targetSection.offsetTop - 100,
+        behavior: 'smooth'
+    });
 }
 
 function nextSection() {
@@ -39,24 +59,25 @@ function prevSection() {
     }
 }
 
-// Initialize section links
+// Initialize navigation and progress
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.section-link').forEach(link => {
-        link.addEventListener('click', function(e) {
+    // Add click handlers to chapter points
+    document.querySelectorAll('.chapter-point').forEach(point => {
+        point.addEventListener('click', function(e) {
             e.preventDefault();
             const sectionNumber = parseInt(this.getAttribute('data-section'));
             showSection(sectionNumber);
         });
     });
     
+    // Show first section and initialize progress
+    showSection(1);
+    
     // Initialize Multiple Choice questions
     initializeMultipleChoice();
     
     // Initialize Drag & Drop
     initializeDragAndDrop();
-    
-    // Initialize progress bar
-    updateProgress();
 });
 
 // Multiple Choice functionality
