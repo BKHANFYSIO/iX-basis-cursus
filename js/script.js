@@ -331,235 +331,208 @@ function generatePDF() {
         }
     }
     
-    try {
-        const currentDate = new Date().toLocaleDateString('nl-NL');
-        const { jsPDF } = window.jspdf;
-        if (!jsPDF) {
-            throw new Error('jsPDF is niet correct geladen. Vernieuw de pagina en probeer het opnieuw.');
+    const currentDate = new Date().toLocaleDateString('nl-NL');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+    });
+    
+    // Certificaat pagina
+    doc.addImage('images/logo-health-transparant1.png', 'PNG', 20, 20, 40, 10);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.setTextColor(123, 32, 130); // Paars #7b2082
+    doc.text('Certificaat van Afronding', 105, 60, { align: 'center' });
+    doc.setFontSize(18);
+    doc.text('Basis E-learning Zorgtechnologie in de Fysiotherapie', 105, 70, { align: 'center' });
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(16);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Dit certificaat is uitgereikt aan:', 105, 90, { align: 'center' });
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(0, 161, 154); // Turquoise #00a19a
+    doc.text(studentName, 105, 105, { align: 'center' });
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.text('Datum van afronding:', 105, 125, { align: 'center' });
+    doc.text(currentDate, 105, 135, { align: 'center' });
+    
+    // Voeg leerdoelen toe aan het voorblad
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(123, 32, 130); // Paars #7b2082
+    doc.text('Leerdoelen van deze e-learning:', 20, 160);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    
+    const learningObjectives = [
+        "1. De relevantie en urgentie van zorgtechnologie voor de fysiotherapie uitleggen, gekoppeld aan maatschappelijke uitdagingen.",
+        "2. Concrete voorbeelden van zorgtechnologie herkennen en hun potentiële toepassing benoemen.",
+        "3. De belangrijkste voordelen van zorgtechnologie in de fysiotherapie benoemen.",
+        "4. Kritisch nadenken over de selectie en implementatie van zorgtechnologie.",
+        "5. Het Technology Acceptance Model (TAM) uitleggen en de link leggen met gedragsverandering.",
+        "6. Het V-model voor digitale competenties in de zorg uitleggen en de relevantie erkennen.",
+        "7. Betrouwbare bronnen voor zorgtechnologie informatie vinden.",
+        "8. Reflecteren op je eigen houding en vaardigheden t.o.v. zorgtechnologie."
+    ];
+    
+    let yPosition = 170;
+    learningObjectives.forEach(objective => {
+        if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
         }
+        const splitObjective = doc.splitTextToSize(objective, 170);
+        doc.text(splitObjective, 20, yPosition);
+        yPosition += splitObjective.length * 5 + 5;
+    });
+    
+    doc.setFontSize(12);
+    doc.text('Deze e-learning module is ontwikkeld door iXperium Health', 105, yPosition + 10, { align: 'center' });
+    doc.text('en biedt een introductie in zorgtechnologie voor fysiotherapie.', 105, yPosition + 20, { align: 'center' });
+    
+    // Reflecties pagina's
+    doc.addPage();
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(123, 32, 130); // Paars #7b2082
+    doc.text('Mijn Reflecties en Resultaten', 105, 20, { align: 'center' });
+    
+    yPosition = 40;
+    
+    // Voor elke sectie met reflectievraag
+    for (let i = 1; i <= 7; i++) {
+        const reflectionQuestion = getReflectionQuestion(i);
+        const reflectionAnswer = getReflectionAnswer(i);
         
-        const doc = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
-        });
-
-        // Probeer het logo te laden met error handling
-        try {
-            const img = new Image();
-            img.src = 'images/logo-health-transparant1.png';
-            doc.addImage(img, 'PNG', 20, 20, 40, 10);
-        } catch (logoError) {
-            console.warn('Logo kon niet worden geladen:', logoError);
-            // Ga door zonder logo als het niet lukt
-        }
-        
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(22);
-        doc.setTextColor(123, 32, 130); // Paars #7b2082
-        doc.text('Certificaat van Afronding', 105, 60, { align: 'center' });
-        doc.setFontSize(18);
-        doc.text('Basis E-learning Zorgtechnologie in de Fysiotherapie', 105, 70, { align: 'center' });
-        
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
-        doc.text('Dit certificaat is uitgereikt aan:', 105, 90, { align: 'center' });
-        
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(20);
-        doc.setTextColor(0, 161, 154); // Turquoise #00a19a
-        doc.text(studentName, 105, 105, { align: 'center' });
-        
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(14);
-        doc.setTextColor(0, 0, 0);
-        doc.text('Datum van afronding:', 105, 125, { align: 'center' });
-        doc.text(currentDate, 105, 135, { align: 'center' });
-        
-        doc.setFontSize(12);
-        doc.text('Deze e-learning module is ontwikkeld door iXperium Health', 105, 160, { align: 'center' });
-        doc.text('en biedt een introductie in zorgtechnologie voor fysiotherapie.', 105, 170, { align: 'center' });
-        
-        // Add learning objectives to first page
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(14);
-        doc.setTextColor(123, 32, 130); // Paars #7b2082
-        doc.text('Leerdoelen waar aan gewerkt is:', 105, 190, { align: 'center' });
-        
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10);
-        doc.setTextColor(0, 0, 0);
-        
-        const learningObjectives = [
-            "De relevantie en urgentie van zorgtechnologie voor de fysiotherapie uitleggen, gekoppeld aan maatschappelijke uitdagingen.",
-            "Concrete voorbeelden van zorgtechnologie herkennen en hun potentiële toepassing benoemen.",
-            "De belangrijkste voordelen van zorgtechnologie in de fysiotherapie benoemen.",
-            "Kritisch nadenken over de selectie en implementatie van zorgtechnologie.",
-            "Het Technology Acceptance Model (TAM) uitleggen en de link leggen met gedragsverandering.",
-            "Het V-model voor digitale competentiegebieden in de zorg uitleggen en de relevantie erkennen.",
-            "Betrouwbare bronnen voor zorgtechnologie informatie vinden.",
-            "Reflecteren op je eigen houding en vaardigheden t.o.v. zorgtechnologie."
-        ];
-        
-        yPosition = 200;
-        learningObjectives.forEach((objective, index) => {
-            if (yPosition > 270) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(0, 161, 154); // Turquoise #00a19a
-            doc.text(`Leerdoel ${index + 1}:`, 20, yPosition);
-            yPosition += 7;
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(0, 0, 0);
-            
-            // Split long objectives into multiple lines
-            const splitObjective = doc.splitTextToSize(objective, 170);
-            doc.text(splitObjective, 20, yPosition);
-            yPosition += splitObjective.length * 5 + 5;
-        });
-        
-        // Reflecties pagina's
-        doc.addPage();
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(18);
-        doc.setTextColor(123, 32, 130); // Paars #7b2082
-        doc.text('Mijn Reflecties en Resultaten', 105, 20, { align: 'center' });
-        
-        let yPosition = 40;
-        
-        // Voor elke sectie met reflectievraag
-        for (let i = 1; i <= 7; i++) {
-            const reflectionQuestion = getReflectionQuestion(i);
-            const reflectionAnswer = getReflectionAnswer(i);
-            
-            // Voeg nieuwe pagina toe indien nodig
-            if (yPosition > 250) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(14);
-            doc.setTextColor(0, 161, 154); // Turquoise #00a19a
-            doc.text(`Sectie ${i}:`, 20, yPosition);
-            yPosition += 10;
-            
-            doc.setFont('helvetica', 'italic');
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            
-            // Splits lange reflectievragen in meerdere regels
-            const splitQuestion = doc.splitTextToSize(reflectionQuestion, 170);
-            doc.text(splitQuestion, 20, yPosition);
-            yPosition += splitQuestion.length * 7;
-            
-            doc.setFont('helvetica', 'normal');
-            
-            // Splits lange antwoorden in meerdere regels
-            const splitAnswer = doc.splitTextToSize(reflectionAnswer, 170);
-            doc.text(splitAnswer, 20, yPosition);
-            yPosition += splitAnswer.length * 7 + 15;
-        }
-        
-        // Voeg resultaten van interactieve elementen toe
-        if (yPosition > 220) {
+        // Voeg nieuwe pagina toe indien nodig
+        if (yPosition > 250) {
             doc.addPage();
             yPosition = 20;
         }
         
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(14);
-        doc.setTextColor(123, 32, 130); // Paars #7b2082
-        doc.text('Resultaten van interactieve oefeningen:', 20, yPosition);
+        doc.setTextColor(0, 161, 154); // Turquoise #00a19a
+        doc.text(`Sectie ${i}:`, 20, yPosition);
         yPosition += 10;
         
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('helvetica', 'italic');
         doc.setFontSize(12);
         doc.setTextColor(0, 0, 0);
         
-        const mcScore = getMCScore();
-        doc.text(`Multiple Choice vragen: ${mcScore.correct} van ${mcScore.total} correct`, 20, yPosition);
-        yPosition += 10;
+        // Splits lange reflectievragen in meerdere regels
+        const splitQuestion = doc.splitTextToSize(reflectionQuestion, 170);
+        doc.text(splitQuestion, 20, yPosition);
+        yPosition += splitQuestion.length * 7;
         
-        const dragDropScore = getDragDropScore();
-        doc.text(`Drag & Drop oefening: ${dragDropScore.correct} van ${dragDropScore.total} correct geplaatst`, 20, yPosition);
-        
-        // Add learning objectives section
-        doc.addPage();
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(18);
-        doc.setTextColor(123, 32, 130); // Paars #7b2082
-        doc.text('Behaalde Leerdoelen', 105, 20, { align: 'center' });
-        
-        yPosition = 40;
         doc.setFont('helvetica', 'normal');
-        doc.setFontSize(12);
-        doc.setTextColor(0, 0, 0);
         
-        const achievedObjectives = [];
-        
-        // Objective 1: Based on reflection 1
-        if (!unansweredSections.includes(1)) achievedObjectives.push(0);
-        
-        // Objective 2: Based on reflection 2
-        if (!unansweredSections.includes(2)) achievedObjectives.push(1);
-        
-        // Objective 3: Based on drag & drop and reflection 3
-        if (!unansweredSections.includes(3)) achievedObjectives.push(2);
-        
-        // Objective 4: Based on MC1 and reflection 4
-        if (!unansweredSections.includes(4)) achievedObjectives.push(3);
-        
-        // Objective 5: Based on reflection 5
-        if (!unansweredSections.includes(5)) achievedObjectives.push(4);
-        
-        // Objective 6: Based on reflection 6
-        if (!unansweredSections.includes(6)) achievedObjectives.push(5);
-        
-        // Objective 7: Based on MC2 and reflection 7
-        if (!unansweredSections.includes(7)) achievedObjectives.push(6);
-        
-        // Objective 8: Based on all reflections
-        if (unansweredSections.length === 0) achievedObjectives.push(7);
-        
-        // Add objectives to PDF
-        learningObjectives.forEach((objective, index) => {
-            if (yPosition > 250) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(0, 161, 154); // Turquoise #00a19a
-            doc.text(`Leerdoel ${index + 1}:`, 20, yPosition);
-            yPosition += 10;
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(0, 0, 0);
-            
-            // Split long objectives into multiple lines
-            const splitObjective = doc.splitTextToSize(objective, 170);
-            doc.text(splitObjective, 20, yPosition);
-            yPosition += splitObjective.length * 7;
-            
-            // Add achievement status
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(achievedObjectives.includes(index) ? '#28a745' : '#dc3545');
-            doc.text(achievedObjectives.includes(index) ? '✓ Behaald' : '✗ Nog niet behaald', 20, yPosition);
-            yPosition += 15;
-        });
-        
-        // Download de PDF
-        doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);
-    } catch (error) {
-        console.error('Er is een fout opgetreden bij het genereren van het certificaat:', error);
-        alert('Er is een fout opgetreden bij het genereren van het certificaat. Probeer het later opnieuw.');
+        // Splits lange antwoorden in meerdere regels
+        const splitAnswer = doc.splitTextToSize(reflectionAnswer, 170);
+        doc.text(splitAnswer, 20, yPosition);
+        yPosition += splitAnswer.length * 7 + 15;
     }
+    
+    // Voeg resultaten van interactieve elementen toe
+    if (yPosition > 220) {
+        doc.addPage();
+        yPosition = 20;
+    }
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.setTextColor(123, 32, 130); // Paars #7b2082
+    doc.text('Resultaten van interactieve oefeningen:', 20, yPosition);
+    yPosition += 10;
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    
+    const mcScore = getMCScore();
+    doc.text(`Multiple Choice vragen: ${mcScore.correct} van ${mcScore.total} correct`, 20, yPosition);
+    yPosition += 10;
+    
+    const dragDropScore = getDragDropScore();
+    doc.text(`Drag & Drop oefening: ${dragDropScore.correct} van ${dragDropScore.total} correct geplaatst`, 20, yPosition);
+    
+    // Add learning objectives section
+    doc.addPage();
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(123, 32, 130); // Paars #7b2082
+    doc.text('Behaalde Leerdoelen', 105, 20, { align: 'center' });
+    
+    yPosition = 40;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    
+    const achievedObjectives = [];
+    
+    // Objective 1: Based on reflection 1
+    if (!unansweredSections.includes(1)) achievedObjectives.push(0);
+    
+    // Objective 2: Based on reflection 2
+    if (!unansweredSections.includes(2)) achievedObjectives.push(1);
+    
+    // Objective 3: Based on drag & drop and reflection 3
+    if (!unansweredSections.includes(3)) achievedObjectives.push(2);
+    
+    // Objective 4: Based on MC1 and reflection 4
+    if (!unansweredSections.includes(4)) achievedObjectives.push(3);
+    
+    // Objective 5: Based on reflection 5
+    if (!unansweredSections.includes(5)) achievedObjectives.push(4);
+    
+    // Objective 6: Based on reflection 6
+    if (!unansweredSections.includes(6)) achievedObjectives.push(5);
+    
+    // Objective 7: Based on MC2 and reflection 7
+    if (!unansweredSections.includes(7)) achievedObjectives.push(6);
+    
+    // Objective 8: Based on all reflections
+    if (unansweredSections.length === 0) achievedObjectives.push(7);
+    
+    // Add objectives to PDF
+    learningObjectives.forEach((objective, index) => {
+        if (yPosition > 250) {
+            doc.addPage();
+            yPosition = 20;
+        }
+        
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(0, 161, 154); // Turquoise #00a19a
+        doc.text(`Leerdoel ${index + 1}:`, 20, yPosition);
+        yPosition += 10;
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
+        
+        // Split long objectives into multiple lines
+        const splitObjective = doc.splitTextToSize(objective, 170);
+        doc.text(splitObjective, 20, yPosition);
+        yPosition += splitObjective.length * 7;
+        
+        // Add achievement status
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(achievedObjectives.includes(index) ? '#28a745' : '#dc3545');
+        doc.text(achievedObjectives.includes(index) ? '✓ Behaald' : '✗ Nog niet behaald', 20, yPosition);
+        yPosition += 15;
+    });
+    
+    // Download de PDF
+    doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);
 }
 
 // Helper functies

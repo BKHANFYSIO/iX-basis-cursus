@@ -691,3 +691,438 @@ img {
     color: #666;
     margin-top: 1rem;
 }
+
+/* Tech Showcase Styles */
+.tech-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.tech-item {
+    display: grid;
+    grid-template-columns: 150px 1fr 300px;
+    gap: 1.5rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.tech-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.tech-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--primary-purple);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.tech-logo img {
+    max-width: 100%;
+    max-height: 100px;
+    object-fit: contain;
+}
+
+.tech-description {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.tech-description h3 {
+    color: #7b2082;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.tech-description p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.tech-link {
+    color: #00a19a;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: auto;
+    display: inline-block;
+}
+
+.tech-link:hover {
+    text-decoration: underline;
+}
+
+.tech-media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tech-media iframe {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tech-note {
+    text-align: center;
+    font-style: italic;
+    color: #666;
+    margin: 2rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .tech-item {
+        grid-template-columns: 120px 1fr 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .tech-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .tech-logo {
+        padding: 0.5rem;
+    }
+    
+    .tech-media {
+        margin-top: 1rem;
+    }
+    
+    .tech-media iframe {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+.tam-model {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.model-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin: 0 auto;
+    display: block;
+}
+
+.tam-explanation {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.concept-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.concept-card {
+    background-color: var(--accent-purple);
+    padding: 1.5rem;
+    border-radius: 8px;
+    height: 100%;
+}
+
+.concept-card h4 {
+    color: var(--primary-purple);
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.concept-dutch {
+    color: var(--secondary-purple);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.concept-card p {
+    margin-bottom: 0.5rem;
+}
+
+.example {
+    background-color: var(--white);
+    padding: 0.8rem;
+    border-radius: 4px;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .concept-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Benefits Grid Styling */
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.benefit-card {
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    height: 100%;
+}
+
+.benefit-card h3 {
+    background-color: var(--primary-purple);
+    color: var(--white);
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.benefit-content {
+    padding: 1.5rem;
+}
+
+.example-box {
+    background-color: var(--accent-purple);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.example-box h4 {
+    color: var(--primary-purple);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.example-box p {
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Interactive Exercise Styling */
+.interactive-exercise {
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow);
+}
+
+.interactive-exercise h3 {
+    color: var(--primary-purple);
+    margin-bottom: 1rem;
+}
+
+.drag-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.draggable {
+    background-color: var(--accent-purple);
+    padding: 1rem;
+    border-radius: 6px;
+    cursor: move;
+    transition: all 0.3s ease;
+}
+
+.draggable:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.drop-targets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.drop-target {
+    background-color: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 2px dashed var(--medium-gray);
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.drop-target h4 {
+    color: var(--primary-purple);
+    margin-bottom: 0.5rem;
+}
+
+.tech-example {
+    color: var(--secondary-purple);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .drop-targets {
+        grid-template-columns: 1fr;
+    }
+}
+
+.source {
+    font-size: 0.85em;
+    color: #666;
+    font-style: italic;
+    margin-left: 0.5em;
+}
+
+/* Critical Analysis Section Styling */
+.critical-themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.critical-theme-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.3s ease;
+}
+
+.critical-theme-card:hover {
+    transform: translateY(-5px);
+}
+
+.theme-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.theme-icon img {
+    max-width: 100%;
+    height: auto;
+}
+
+.critical-theme-card h3 {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.theme-content {
+    color: #34495e;
+}
+
+.theme-content p {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.reflection-prompt {
+    background: #f8f9fa;
+    border-left: 4px solid #3498db;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.reflection-prompt p {
+    margin: 0;
+    font-style: italic;
+    color: #2c3e50;
+}
+
+.analysis-form {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+.form-control[type="text"],
+.form-control[type="email"],
+.form-control[type="password"],
+.form-control[type="number"],
+.form-control[type="tel"],
+.form-control[type="url"],
+.form-control[type="search"],
+.form-control[type="date"],
+.form-control[type="time"],
+.form-control[type="datetime-local"],
+.form-control[type="month"],
+.form-control[type="week"],
+.form-control[type="color"],
+.form-control[type="file"],
+.form-control[type="range"],
+.form-control[type="select"],
+.form-control[type="textarea"] {
+    height: auto;
+}
+
+.form-control[type="select"] {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%232c3e50' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+    padding-right: 2.5rem;
+}
