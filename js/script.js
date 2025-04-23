@@ -4,8 +4,18 @@ const totalSections = 8;
 
 function updateProgress() {
     const progressPercentage = ((currentSection - 1) / (totalSections - 1)) * 100;
-    document.getElementById('progress-fill').style.width = `${progressPercentage}%`;
-    document.getElementById('progress-percentage').textContent = `${Math.round(progressPercentage)}%`;
+    
+    // Update progress fill
+    const progressFill = document.getElementById('progress-fill');
+    if (progressFill) {
+        progressFill.style.width = `${progressPercentage}%`;
+    }
+    
+    // Update percentage text
+    const progressText = document.getElementById('progress-percentage');
+    if (progressText) {
+        progressText.textContent = `${Math.round(progressPercentage)}%`;
+    }
     
     // Update chapter points
     document.querySelectorAll('.chapter-point').forEach((point, index) => {
@@ -66,6 +76,7 @@ function prevSection() {
 
 // Initialize navigation and progress
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
     // Add click handlers to chapter points
     document.querySelectorAll('.chapter-point').forEach(point => {
         point.addEventListener('click', function(e) {
@@ -84,6 +95,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize Drag & Drop
     initializeDragAndDrop();
 
+    console.log('Multiple Choice questions initialized'); // Debug log
+
     // Assessment functionality
     const questions = [
         {
@@ -100,150 +113,162 @@ document.addEventListener('DOMContentLoaded', function() {
             id: 'q3',
             correctAnswer: 2,
             feedback: 'Volgens het TAM-model is nuttigheid (perceived usefulness) de belangrijkste factor voor technologie acceptatie, gevolgd door gebruiksgemak (perceived ease of use).'
+        },
+        {
+            id: 'mc2',
+            correctAnswer: 2,
+            feedback: 'De GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing. Het is een onafhankelijke bron die apps test volgens landelijke richtlijnen.'
         }
     ];
 
     // Add click handlers for all multiple choice options
     document.querySelectorAll('.mc-option').forEach(option => {
         option.addEventListener('click', function() {
-            const questionId = this.closest('.mc-question').querySelector('.feedback').id.split('-')[0];
+            // Get the question container
+            const questionContainer = this.closest('.mc-question');
+            const feedbackElement = questionContainer.querySelector('.feedback');
+            const questionId = feedbackElement.id.split('-')[0];
+            
+            // Find the question data
             const question = questions.find(q => q.id === questionId);
+            if (!question) {
+                console.error(`Question data not found for ID: ${questionId}`);
+                return;
+            }
+            
             const selectedId = parseInt(this.getAttribute('data-id'));
             
             // Remove selected class from all options in this question
-            this.closest('.mc-question').querySelectorAll('.mc-option').forEach(opt => {
-                opt.classList.remove('selected');
+            questionContainer.querySelectorAll('.mc-option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
             });
             
             // Add selected class to clicked option
             this.classList.add('selected');
             
+            // Check if answer is correct
+            const isCorrect = selectedId === question.correctAnswer;
+            
+            // Add correct/incorrect class
+            this.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
             // Show feedback
-            const feedbackElement = document.getElementById(`${questionId}-feedback`);
             feedbackElement.textContent = question.feedback;
-            feedbackElement.className = 'feedback ' + (selectedId === question.correctAnswer ? 'correct' : 'incorrect');
+            feedbackElement.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
+            
+            // Save MC score
+            saveMCScore(questionId, isCorrect ? 1 : 0, 1);
         });
     });
 });
 
 // Multiple Choice functionality
 function initializeMultipleChoice() {
-    // First MC question in section 4
-    const mcOptions = document.querySelectorAll('#section4 .mc-option');
-    mcOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            // Remove selected class from all options
-            mcOptions.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
-            
-            // Add selected class to clicked option
-            this.classList.add('selected');
-            
-            // Check if answer is correct (option 3 is correct)
-            const isCorrect = this.getAttribute('data-id') === '3';
-            
-            // Add correct/incorrect class
-            this.classList.add(isCorrect ? 'correct' : 'incorrect');
-            
-            // Show feedback
-            const feedback = document.getElementById('mc-feedback');
-            if (feedback) {
-                feedback.innerHTML = isCorrect ? 
-                    "Goed gedaan! Hoewel alle genoemde aspecten belangrijk zijn, is het essentieel om eerst te bepalen of er wetenschappelijk bewijs is voor de effectiviteit van de technologie. Als de kwaliteit van zorg niet verbetert of gewaarborgd blijft, zijn andere overwegingen minder relevant." : 
-                    "Dat is een belangrijk aspect om te overwegen, maar niet het meest fundamentele. Voordat je investeert in tijd of geld, is het essentieel om te weten of er wetenschappelijk bewijs is dat de technologie daadwerkelijk effectief is voor de beoogde toepassing.";
-                
-                feedback.classList.remove('correct', 'incorrect');
-                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
-            }
-            
-            // Save MC score
-            saveMCScore(1, isCorrect ? 1 : 0, 1);
-        });
-    });
+    console.log('Initializing Multiple Choice questions...');
     
-    // Second MC question in section 7
-    const mc2Options = document.querySelectorAll('#section7 .mc-option');
-    mc2Options.forEach(option => {
-        option.addEventListener('click', function() {
-            // Remove selected class from all options
-            mc2Options.forEach(opt => opt.classList.remove('selected', 'correct', 'incorrect'));
+    // Add click handlers for all multiple choice options
+    const mcOptions = document.querySelectorAll('.mc-option');
+    console.log(`Found ${mcOptions.length} MC options`);
+    
+    mcOptions.forEach((option, index) => {
+        console.log(`Setting up click handler for option ${index + 1}`);
+        
+        option.addEventListener('click', function(e) {
+            console.log('MC option clicked:', this.textContent);
+            
+            // Get the question container and feedback element
+            const questionContainer = this.closest('.mc-question');
+            const feedbackElement = questionContainer.querySelector('.feedback');
+            const questionId = feedbackElement.id.split('-')[0];
+            
+            console.log('Question ID:', questionId);
+            
+            // Find the question data
+            const question = questions.find(q => q.id === questionId);
+            if (!question) {
+                console.error(`Question data not found for ID: ${questionId}`);
+                return;
+            }
+            
+            const selectedId = parseInt(this.getAttribute('data-id'));
+            console.log('Selected answer ID:', selectedId);
+            
+            // Remove selected class from all options in this question
+            questionContainer.querySelectorAll('.mc-option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
             
             // Add selected class to clicked option
             this.classList.add('selected');
             
-            // Check if answer is correct (option 2 is correct)
-            const isCorrect = this.getAttribute('data-id') === '2';
+            // Check if answer is correct
+            const isCorrect = selectedId === question.correctAnswer;
+            console.log('Answer is:', isCorrect ? 'correct' : 'incorrect');
             
             // Add correct/incorrect class
             this.classList.add(isCorrect ? 'correct' : 'incorrect');
             
             // Show feedback
-            const feedback = document.getElementById('mc2-feedback');
-            if (feedback) {
-                feedback.innerHTML = isCorrect ? 
-                    "Uitstekend! De GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing. Het is een onafhankelijke bron die apps test volgens landelijke richtlijnen." : 
-                    "Dit is een nuttige bron, maar de GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing volgens landelijke richtlijnen, wat het meest geschikt maakt voor dit doel.";
-                
-                feedback.classList.remove('correct', 'incorrect');
-                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
-            }
+            feedbackElement.textContent = question.feedback;
+            feedbackElement.className = 'feedback ' + (isCorrect ? 'correct' : 'incorrect');
             
             // Save MC score
-            saveMCScore(2, isCorrect ? 1 : 0, 1);
+            saveMCScore(questionId, isCorrect ? 1 : 0, 1);
         });
     });
 }
+
+// Make sure initializeMultipleChoice is called when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded');
+    initializeMultipleChoice();
+});
 
 // Drag & Drop functionality
 function initializeDragAndDrop() {
     const draggables = document.querySelectorAll('.draggable');
     const dropTargets = document.querySelectorAll('.drop-target');
-    let draggedItem = null;
-
-    // Make items draggable
+    
     draggables.forEach(draggable => {
-        draggable.setAttribute('draggable', 'true');
+        draggable.setAttribute('draggable', true);
         
         draggable.addEventListener('dragstart', function(e) {
-            draggedItem = this;
             this.classList.add('dragging');
-            e.dataTransfer.effectAllowed = 'move';
-            e.dataTransfer.setData('text/plain', this.id);
+            e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
         });
-
+        
         draggable.addEventListener('dragend', function() {
             this.classList.remove('dragging');
-            draggedItem = null;
         });
     });
-
-    // Handle drop targets
+    
     dropTargets.forEach(target => {
         target.addEventListener('dragover', function(e) {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
             this.classList.add('dragover');
         });
-
+        
         target.addEventListener('dragleave', function() {
             this.classList.remove('dragover');
         });
-
+        
         target.addEventListener('drop', function(e) {
             e.preventDefault();
             this.classList.remove('dragover');
             
-            if (draggedItem) {
-                // Remove from previous parent if exists
-                if (draggedItem.parentElement) {
-                    draggedItem.parentElement.removeChild(draggedItem);
-                }
-                
-                // Add to new target
-                this.appendChild(draggedItem);
-                
-                // Check results
-                checkDragDropResults();
+            const draggedId = e.dataTransfer.getData('text/plain');
+            const draggable = document.querySelector(`.draggable[data-id="${draggedId}"]`);
+            
+            // Remove from previous parent if exists
+            if (draggable.parentElement) {
+                draggable.parentElement.removeChild(draggable);
             }
+            
+            // Add to new target
+            this.appendChild(draggable);
+            
+            // Check if all items are placed
+            checkDragDropResults();
         });
     });
 }
@@ -254,12 +279,14 @@ function checkDragDropResults() {
     let totalPlaced = 0;
     
     dropTargets.forEach(target => {
+        const targetId = target.getAttribute('data-id');
         const draggable = target.querySelector('.draggable');
+        
         if (draggable) {
             totalPlaced++;
-            const targetId = target.id;
-            const draggableId = draggable.id;
+            const draggableId = draggable.getAttribute('data-id');
             
+            // Check if the combination is correct
             if (isCorrectCombination(targetId, draggableId)) {
                 correctCount++;
                 draggable.classList.add('correct');
@@ -276,11 +303,11 @@ function checkDragDropResults() {
         const feedback = document.getElementById('dragdrop-feedback');
         if (feedback) {
             if (correctCount === totalPlaced) {
-                feedback.textContent = "Goed gedaan! Je hebt alle items correct geplaatst.";
+                feedback.innerHTML = "Goed gedaan! Je hebt alle items correct geplaatst.";
                 feedback.classList.remove('incorrect');
                 feedback.classList.add('correct');
             } else {
-                feedback.textContent = "Niet alle items zijn correct geplaatst. Probeer het opnieuw.";
+                feedback.innerHTML = "Niet alle items zijn correct geplaatst. Probeer het opnieuw.";
                 feedback.classList.remove('correct');
                 feedback.classList.add('incorrect');
             }
@@ -294,10 +321,9 @@ function checkDragDropResults() {
 function isCorrectCombination(targetId, draggableId) {
     // Define correct combinations based on your specific exercise
     const correctCombinations = {
-        'target1': 'item1',
-        'target2': 'item2',
-        'target3': 'item3',
-        'target4': 'item4'
+        '1': '2', // Example: target 1 should have draggable 2
+        '2': '3', // Example: target 2 should have draggable 3
+        '3': '1'  // Example: target 3 should have draggable 1
     };
     
     return correctCombinations[targetId] === draggableId;
