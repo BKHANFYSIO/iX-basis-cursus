@@ -22,6 +22,9 @@ function updateProgress() {
 }
 
 function showSection(sectionNumber) {
+    // First scroll to top immediately
+    window.scrollTo(0, 0);
+    
     // Hide all sections first
     const sections = document.querySelectorAll('.section');
     sections.forEach(section => {
@@ -40,11 +43,13 @@ function showSection(sectionNumber) {
     currentSection = sectionNumber;
     updateProgress();
     
-    // Scroll to top of the section
-    window.scrollTo({
-        top: targetSection.offsetTop - 100,
-        behavior: 'smooth'
-    });
+    // Force scroll to top after a small delay to ensure DOM updates are complete
+    setTimeout(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'instant'
+        });
+    }, 50);
 }
 
 function nextSection() {

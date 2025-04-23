@@ -1148,3 +1148,305 @@ img {
         padding: 10px;
     }
 }
+
+/* Competency Section Styling */
+.competency-section {
+    margin: 2rem 0;
+}
+
+.competency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.competency-card {
+    background: var(--white);
+    border: 2px solid var(--primary-purple);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.competency-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(102, 36, 131, 0.2);
+}
+
+.competency-card h4 {
+    color: var(--primary-purple);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-purple);
+}
+
+.competency-card p {
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.competency-card .example-box {
+    background: var(--accent-purple);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+}
+
+.competency-card .example-box p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Note Box Styling */
+.note-box {
+    background: var(--accent-purple);
+    border-left: 4px solid var(--primary-purple);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.note-box h4 {
+    color: var(--primary-purple);
+    margin-bottom: 0.5rem;
+}
+
+.note-box p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Competency Assessment Styling */
+.competency-assessment {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow);
+}
+
+.assessment-scale {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--accent-purple);
+    border-radius: 8px;
+}
+
+.assessment-scale span {
+    font-weight: 500;
+    color: var(--primary-purple);
+}
+
+.assessment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.assessment-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.assessment-item label {
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.assessment-select {
+    padding: 0.8rem;
+    border: 2px solid var(--medium-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.assessment-select:focus {
+    border-color: var(--primary-purple);
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-purple);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .competency-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .assessment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .assessment-scale {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+/* Ethical Reflection Styling */
+.ethical-reflection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.ethical-card {
+    background: var(--white);
+    border: 2px solid var(--primary-purple);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.ethical-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(102, 36, 131, 0.2);
+}
+
+.ethical-card h4 {
+    color: var(--primary-purple);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-purple);
+}
+
+.ethical-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Responsive adjustments for ethical reflection */
+@media (max-width: 768px) {
+    .ethical-reflection-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Featured iXperium Section */
+.featured-ixperium {
+    background-color: var(--accent-purple);
+    padding: 2rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+}
+
+.featured-ixperium h3 {
+    color: var(--primary-purple);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.ixperium-catalogs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.catalog-card {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.catalog-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.qr-code {
+    width: 150px;
+    height: 150px;
+    margin: 1rem 0;
+}
+
+/* Resource Grid */
+.tech-resources {
+    margin: 2rem 0;
+}
+
+.tech-resources h3 {
+    color: var(--primary-purple);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.resource-card {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+}
+
+.resource-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+}
+
+.resource-card h4 {
+    color: var(--primary-purple);
+    margin: 0.5rem 0;
+}
+
+.resource-card p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.resource-card .btn {
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ixperium-catalogs {
+        grid-template-columns: 1fr;
+    }
+
+    .resource-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .catalog-card, .resource-card {
+        padding: 1rem;
+    }
+
+    .qr-code {
+        width: 120px;
+        height: 120px;
+    }
+}
