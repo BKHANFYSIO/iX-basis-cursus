@@ -146,12 +146,14 @@ function initializeMultipleChoice() {
             
             // Show feedback
             const feedback = document.getElementById('mc-feedback');
-            feedback.innerHTML = isCorrect ? 
-                "Goed gedaan! Hoewel alle genoemde aspecten belangrijk zijn, is het essentieel om eerst te bepalen of er wetenschappelijk bewijs is voor de effectiviteit van de technologie. Als de kwaliteit van zorg niet verbetert of gewaarborgd blijft, zijn andere overwegingen minder relevant." : 
-                "Dat is een belangrijk aspect om te overwegen, maar niet het meest fundamentele. Voordat je investeert in tijd of geld, is het essentieel om te weten of er wetenschappelijk bewijs is dat de technologie daadwerkelijk effectief is voor de beoogde toepassing.";
-            
-            feedback.classList.remove('correct', 'incorrect');
-            feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            if (feedback) {
+                feedback.innerHTML = isCorrect ? 
+                    "Goed gedaan! Hoewel alle genoemde aspecten belangrijk zijn, is het essentieel om eerst te bepalen of er wetenschappelijk bewijs is voor de effectiviteit van de technologie. Als de kwaliteit van zorg niet verbetert of gewaarborgd blijft, zijn andere overwegingen minder relevant." : 
+                    "Dat is een belangrijk aspect om te overwegen, maar niet het meest fundamentele. Voordat je investeert in tijd of geld, is het essentieel om te weten of er wetenschappelijk bewijs is dat de technologie daadwerkelijk effectief is voor de beoogde toepassing.";
+                
+                feedback.classList.remove('correct', 'incorrect');
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            }
             
             // Save MC score
             saveMCScore(1, isCorrect ? 1 : 0, 1);
@@ -176,12 +178,14 @@ function initializeMultipleChoice() {
             
             // Show feedback
             const feedback = document.getElementById('mc2-feedback');
-            feedback.innerHTML = isCorrect ? 
-                "Uitstekend! De GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing. Het is een onafhankelijke bron die apps test volgens landelijke richtlijnen." : 
-                "Dit is een nuttige bron, maar de GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing volgens landelijke richtlijnen, wat het meest geschikt maakt voor dit doel.";
-            
-            feedback.classList.remove('correct', 'incorrect');
-            feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            if (feedback) {
+                feedback.innerHTML = isCorrect ? 
+                    "Uitstekend! De GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing. Het is een onafhankelijke bron die apps test volgens landelijke richtlijnen." : 
+                    "Dit is een nuttige bron, maar de GGD AppStore is specifiek ontworpen om gezondheidsapps te beoordelen op gebruiksvriendelijkheid, privacy, betrouwbaarheid en onderbouwing volgens landelijke richtlijnen, wat het meest geschikt maakt voor dit doel.";
+                
+                feedback.classList.remove('correct', 'incorrect');
+                feedback.classList.add(isCorrect ? 'correct' : 'incorrect');
+            }
             
             // Save MC score
             saveMCScore(2, isCorrect ? 1 : 0, 1);
@@ -193,50 +197,52 @@ function initializeMultipleChoice() {
 function initializeDragAndDrop() {
     const draggables = document.querySelectorAll('.draggable');
     const dropTargets = document.querySelectorAll('.drop-target');
-    
+    let draggedItem = null;
+
+    // Make items draggable
     draggables.forEach(draggable => {
-        draggable.addEventListener('dragstart', function(e) {
-            draggable.classList.add('dragging');
-            e.dataTransfer.setData('text/plain', draggable.getAttribute('data-id'));
-        });
+        draggable.setAttribute('draggable', 'true');
         
+        draggable.addEventListener('dragstart', function(e) {
+            draggedItem = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.id);
+        });
+
         draggable.addEventListener('dragend', function() {
-            draggable.classList.remove('dragging');
+            this.classList.remove('dragging');
+            draggedItem = null;
         });
     });
-    
+
+    // Handle drop targets
     dropTargets.forEach(target => {
         target.addEventListener('dragover', function(e) {
             e.preventDefault();
-            target.classList.add('dragover');
+            e.dataTransfer.dropEffect = 'move';
+            this.classList.add('dragover');
         });
-        
+
         target.addEventListener('dragleave', function() {
-            target.classList.remove('dragover');
+            this.classList.remove('dragover');
         });
-        
+
         target.addEventListener('drop', function(e) {
             e.preventDefault();
-            target.classList.remove('dragover');
+            this.classList.remove('dragover');
             
-            const draggedId = e.dataTransfer.getData('text/plain');
-            const targetId = target.getAttribute('data-id');
-            
-            if (draggedId === targetId) {
-                const draggable = document.querySelector(`.draggable[data-id="${draggedId}"]`);
-                target.appendChild(draggable);
-                draggable.style.margin = '0.5rem';
-                // Optionally add some success feedback
-                target.style.borderColor = '#27ae60';
-                setTimeout(() => {
-                    target.style.borderColor = '#bdc3c7';
-                }, 1000);
-            } else {
-                // Optionally add some error feedback
-                target.style.borderColor = '#e74c3c';
-                setTimeout(() => {
-                    target.style.borderColor = '#bdc3c7';
-                }, 1000);
+            if (draggedItem) {
+                // Remove from previous parent if exists
+                if (draggedItem.parentElement) {
+                    draggedItem.parentElement.removeChild(draggedItem);
+                }
+                
+                // Add to new target
+                this.appendChild(draggedItem);
+                
+                // Check results
+                checkDragDropResults();
             }
         });
     });
@@ -248,51 +254,53 @@ function checkDragDropResults() {
     let totalPlaced = 0;
     
     dropTargets.forEach(target => {
-        const targetId = target.getAttribute('data-id');
-        const children = target.children;
-        
-        for (let i = 0; i < children.length; i++) {
-            if (children[i].classList.contains('draggable')) {
-                totalPlaced++;
-                const draggableId = children[i].getAttribute('data-id');
-                
-                // Correct combinations:
-                // draggable 2 -> target 1 (Bewegingsanalyse-apps)
-                // draggable 3 -> target 2 (Virtual Reality)
-                // draggable 1 -> target 3 (eHealth platforms)
-                let isCorrect = false;
-                
-                if (targetId === '1' && draggableId === '2') isCorrect = true;
-                if (targetId === '2' && draggableId === '3') isCorrect = true;
-                if (targetId === '3' && draggableId === '1') isCorrect = true;
-                
-                if (isCorrect) {
-                    correctCount++;
-                    children[i].classList.add('correct');
-                } else {
-                    children[i].classList.remove('correct');
-                }
+        const draggable = target.querySelector('.draggable');
+        if (draggable) {
+            totalPlaced++;
+            const targetId = target.id;
+            const draggableId = draggable.id;
+            
+            if (isCorrectCombination(targetId, draggableId)) {
+                correctCount++;
+                draggable.classList.add('correct');
+                draggable.classList.remove('incorrect');
+            } else {
+                draggable.classList.add('incorrect');
+                draggable.classList.remove('correct');
             }
         }
     });
     
     // Show feedback if all items are placed
-    if (totalPlaced === 3) {
+    if (totalPlaced === dropTargets.length) {
         const feedback = document.getElementById('dragdrop-feedback');
-        
-        if (correctCount === 3) {
-            feedback.innerHTML = "Goed gedaan! Je hebt de voordelen correct gekoppeld aan de meest relevante technologiecategorieën.";
-            feedback.classList.remove('incorrect');
-            feedback.classList.add('correct');
-        } else {
-            feedback.innerHTML = "Niet helemaal juist. Bekijk de eigenschappen van elke technologie nog eens en probeer opnieuw.";
-            feedback.classList.remove('correct');
-            feedback.classList.add('incorrect');
+        if (feedback) {
+            if (correctCount === totalPlaced) {
+                feedback.textContent = "Goed gedaan! Je hebt alle items correct geplaatst.";
+                feedback.classList.remove('incorrect');
+                feedback.classList.add('correct');
+            } else {
+                feedback.textContent = "Niet alle items zijn correct geplaatst. Probeer het opnieuw.";
+                feedback.classList.remove('correct');
+                feedback.classList.add('incorrect');
+            }
+            
+            // Save score
+            saveDragDropScore(correctCount, totalPlaced);
         }
-        
-        // Save Drag & Drop score
-        saveDragDropScore(correctCount, 3);
     }
+}
+
+function isCorrectCombination(targetId, draggableId) {
+    // Define correct combinations based on your specific exercise
+    const correctCombinations = {
+        'target1': 'item1',
+        'target2': 'item2',
+        'target3': 'item3',
+        'target4': 'item4'
+    };
+    
+    return correctCombinations[targetId] === draggableId;
 }
 
 // Reflection questions
@@ -329,6 +337,57 @@ function saveDragDropScore(correct, total) {
     localStorage.setItem('dragdrop_total', total);
 }
 
+// Save critical analysis
+function saveAnalysis() {
+    const techChoice = document.getElementById('tech-choice').value;
+    const strengths = document.getElementById('strengths').value;
+    const challenges = document.getElementById('challenges').value;
+    const implementation = document.getElementById('implementation').value;
+
+    if (!techChoice || !strengths || !challenges || !implementation) {
+        alert('Vul alstublieft alle velden in voordat je de analyse opslaat.');
+        return;
+    }
+
+    const analysis = {
+        techChoice,
+        strengths,
+        challenges,
+        implementation,
+        timestamp: new Date().toISOString()
+    };
+
+    localStorage.setItem('critical_analysis', JSON.stringify(analysis));
+    alert('Je kritische analyse is opgeslagen!');
+}
+
+// Save self-assessment
+function saveSelfAssessment() {
+    const veranderen = document.getElementById('veranderen').value;
+    const vinden = document.getElementById('vinden').value;
+    const vertrouwen = document.getElementById('vertrouwen').value;
+    const vaardig = document.getElementById('vaardig').value;
+    const vertellen = document.getElementById('vertellen').value;
+
+    if (!veranderen || !vinden || !vertrouwen || !vaardig || !vertellen) {
+        alert('Vul alstublieft alle competenties in voordat je de zelfbeoordeling opslaat.');
+        return;
+    }
+
+    const assessment = {
+        veranderen,
+        vinden,
+        vertrouwen,
+        vaardig,
+        vertellen,
+        timestamp: new Date().toISOString()
+    };
+
+    localStorage.setItem('self_assessment', JSON.stringify(assessment));
+    alert('Je zelfbeoordeling is opgeslagen!');
+}
+
+// Update checkUnansweredQuestions to include critical analysis and self-assessment
 function checkUnansweredQuestions() {
     const unansweredSections = [];
     
@@ -338,6 +397,18 @@ function checkUnansweredQuestions() {
         if (!answer || answer.trim() === '') {
             unansweredSections.push(i);
         }
+    }
+    
+    // Check critical analysis
+    const criticalAnalysis = localStorage.getItem('critical_analysis');
+    if (!criticalAnalysis) {
+        unansweredSections.push(4);
+    }
+    
+    // Check self-assessment
+    const selfAssessment = localStorage.getItem('self_assessment');
+    if (!selfAssessment) {
+        unansweredSections.push(6);
     }
     
     // Check MC questions in section 4
@@ -534,6 +605,70 @@ function generatePDF() {
         }).length;
         
         doc.text(`Eindtoets: ${correctAnswers} van 3 vragen correct`, 20, yPosition);
+        
+        // Add critical analysis to PDF
+        const criticalAnalysis = JSON.parse(localStorage.getItem('critical_analysis') || '{}');
+        if (criticalAnalysis.techChoice) {
+            if (yPosition > 220) {
+                doc.addPage();
+                yPosition = 20;
+            }
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.setTextColor(123, 32, 130);
+            doc.text('Kritische Analyse:', 20, yPosition);
+            yPosition += 10;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            doc.text(`Gekozen technologie: ${criticalAnalysis.techChoice}`, 20, yPosition);
+            yPosition += 10;
+            
+            const strengths = doc.splitTextToSize(`Sterke punten: ${criticalAnalysis.strengths}`, 170);
+            doc.text(strengths, 20, yPosition);
+            yPosition += strengths.length * 7;
+            
+            const challenges = doc.splitTextToSize(`Uitdagingen: ${criticalAnalysis.challenges}`, 170);
+            doc.text(challenges, 20, yPosition);
+            yPosition += challenges.length * 7;
+            
+            const implementation = doc.splitTextToSize(`Implementatieplan: ${criticalAnalysis.implementation}`, 170);
+            doc.text(implementation, 20, yPosition);
+            yPosition += implementation.length * 7 + 15;
+        }
+        
+        // Add self-assessment to PDF
+        const selfAssessment = JSON.parse(localStorage.getItem('self_assessment') || '{}');
+        if (selfAssessment.veranderen) {
+            if (yPosition > 220) {
+                doc.addPage();
+                yPosition = 20;
+            }
+            
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.setTextColor(123, 32, 130);
+            doc.text('Zelfbeoordeling V-competenties:', 20, yPosition);
+            yPosition += 10;
+            
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            doc.text(`Veranderen: Niveau ${selfAssessment.veranderen}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`Vinden: Niveau ${selfAssessment.vinden}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`Vertrouwen: Niveau ${selfAssessment.vertrouwen}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`Vaardig gebruiken: Niveau ${selfAssessment.vaardig}`, 20, yPosition);
+            yPosition += 10;
+            doc.text(`Vertellen: Niveau ${selfAssessment.vertellen}`, 20, yPosition);
+            yPosition += 15;
+        }
         
         // Download de PDF
         doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);

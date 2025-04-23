@@ -327,35 +327,39 @@
                     <h3>Categoriseer de Voorbeelden</h3>
                     <p>Nu je de verschillende categorieën kent, kun je de technologieën uit de showcase indelen. Sleep elk voorbeeld naar de juiste categorie:</p>
                     
-                    <div class="drag-container">
-                        <div class="draggable" draggable="true" data-id="1">Fysio.ai</div>
-                        <div class="draggable" draggable="true" data-id="2">Blazepods</div>
-                        <div class="draggable" draggable="true" data-id="3">Corpus VR</div>
-                        <div class="draggable" draggable="true" data-id="4">Physitrack</div>
+                    <div class="drag-drop-container">
+                        <div class="draggable-items">
+                            <div id="item1" class="draggable">Fysio.ai</div>
+                            <div id="item2" class="draggable">Blazepods</div>
+                            <div id="item3" class="draggable">Corpus VR</div>
+                            <div id="item4" class="draggable">Physitrack</div>
+                        </div>
+                        
+                        <div class="drop-targets">
+                            <div id="target1" class="drop-target">
+                                <span class="target-label">Artificial Intelligence</span>
+                            </div>
+                            <div id="target2" class="drop-target">
+                                <span class="target-label">Interactieve Trainingstools</span>
+                            </div>
+                            <div id="target3" class="drop-target">
+                                <span class="target-label">Virtual Reality</span>
+                            </div>
+                            <div id="target4" class="drop-target">
+                                <span class="target-label">eHealth Platforms</span>
+                            </div>
+                        </div>
+                        
+                        <div id="dragdrop-feedback" class="feedback"></div>
                     </div>
                     
-                    <div class="drop-targets">
-                        <div class="drop-target" data-id="1">
-                            <h4>Artificial Intelligence</h4>
-                        </div>
-                        <div class="drop-target" data-id="2">
-                            <h4>Interactieve Trainingstools</h4>
-                        </div>
-                        <div class="drop-target" data-id="3">
-                            <h4>Virtual Reality</h4>
-                        </div>
-                        <div class="drop-target" data-id="4">
-                            <h4>eHealth Platforms</h4>
-                        </div>
+                    <p class="tech-note">Dit overzicht laat zien hoe divers zorgtechnologie is. In sectie 7 vind je meer informatie over waar je nog meer zorgtechnologie kunt ontdekken, zoals in de iXperium catalogi.</p>
+                    
+                    <div class="reflection-container">
+                        <p class="reflection-question">Welke categorie zorgtechnologie spreekt jou het meeste aan en waarom? Denk hierbij aan hoe jij deze technologie zou willen inzetten in je toekomstige werk als fysiotherapeut.</p>
+                        <textarea class="reflection-input" id="reflection2" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                        <button class="btn" onclick="saveReflection(2)">Opslaan</button>
                     </div>
-                </div>
-                
-                <p class="tech-note">Dit overzicht laat zien hoe divers zorgtechnologie is. In sectie 7 vind je meer informatie over waar je nog meer zorgtechnologie kunt ontdekken, zoals in de iXperium catalogi.</p>
-                
-                <div class="reflection-container">
-                    <p class="reflection-question">Welke categorie zorgtechnologie spreekt jou het meeste aan en waarom? Denk hierbij aan hoe jij deze technologie zou willen inzetten in je toekomstige werk als fysiotherapeut.</p>
-                    <textarea class="reflection-input" id="reflection2" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
-                    <button class="btn" onclick="saveReflection(2)">Opslaan</button>
                 </div>
             </div>
             
@@ -460,32 +464,33 @@
                     <h3>Interactieve Oefening: Koppel Technologie aan Voordelen</h3>
                     <p>Sleep elk voordeel naar de technologie waar het het beste bij past:</p>
                     
-                    <div class="drag-container">
-                        <div class="draggable" draggable="true" data-id="1">Verhoogde therapietrouw door dagelijkse herinneringen</div>
-                        <div class="draggable" draggable="true" data-id="2">Objectieve bewegingsanalyse voor nauwkeurige feedback</div>
-                        <div class="draggable" draggable="true" data-id="3">Motiverende gameomgeving voor oefeningen</div>
+                    <div class="drag-drop-container">
+                        <div class="draggable-items">
+                            <div id="item1" class="draggable">Verhoogde therapietrouw door dagelijkse herinneringen</div>
+                            <div id="item2" class="draggable">Objectieve bewegingsanalyse voor nauwkeurige feedback</div>
+                            <div id="item3" class="draggable">Motiverende gameomgeving voor oefeningen</div>
+                        </div>
+                        
+                        <div class="drop-targets">
+                            <div id="target1" class="drop-target">
+                                <span class="target-label">Bewegingsanalyse-apps</span>
+                            </div>
+                            <div id="target2" class="drop-target">
+                                <span class="target-label">Virtual Reality</span>
+                            </div>
+                            <div id="target3" class="drop-target">
+                                <span class="target-label">eHealth Platforms</span>
+                            </div>
+                        </div>
+                        
+                        <div id="dragdrop-feedback" class="feedback"></div>
                     </div>
                     
-                    <div class="drop-targets">
-                        <div class="drop-target" data-id="1">
-                            <h4>Bewegingsanalyse-apps</h4>
-                            <p class="tech-example">(zoals Fysio.ai)</p>
-                        </div>
-                        <div class="drop-target" data-id="2">
-                            <h4>Virtual Reality</h4>
-                            <p class="tech-example">(zoals Corpus VR)</p>
-                        </div>
-                        <div class="drop-target" data-id="3">
-                            <h4>eHealth Platforms</h4>
-                            <p class="tech-example">(zoals Physitrack)</p>
-                        </div>
+                    <div class="reflection-container">
+                        <p class="reflection-question">Welk van de besproken voordelen zou volgens jou het meeste impact kunnen hebben in jouw toekomstige werk als fysiotherapeut? Leg uit waarom en geef een concreet voorbeeld van hoe je dit zou willen toepassen.</p>
+                        <textarea class="reflection-input" id="reflection3" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
+                        <button class="btn" onclick="saveReflection(3)">Opslaan</button>
                     </div>
-                </div>
-                
-                <div class="reflection-container">
-                    <p class="reflection-question">Welk van de besproken voordelen zou volgens jou het meeste impact kunnen hebben in jouw toekomstige werk als fysiotherapeut? Leg uit waarom en geef een concreet voorbeeld van hoe je dit zou willen toepassen.</p>
-                    <textarea class="reflection-input" id="reflection3" minlength="50" maxlength="500" placeholder="Typ hier je antwoord (minimaal 50, maximaal 500 tekens)"></textarea>
-                    <button class="btn" onclick="saveReflection(3)">Opslaan</button>
                 </div>
             </div>
             
@@ -894,6 +899,7 @@
                                 </select>
                             </div>
                         </div>
+                        <button class="btn" onclick="saveSelfAssessment()">Opslaan</button>
                     </div>
                 </div>
                 
