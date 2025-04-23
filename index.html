@@ -536,14 +536,9 @@
                     <h3>Genereer je persoonlijke certificaat en overzicht</h3>
                     <p>Vul je naam in en genereer een PDF met je certificaat en een overzicht van al je reflecties en resultaten.</p>
                     
-                    <label for="student-name">Vul je naam in voor op het certificaat:</label>
-                    <input type="text" id="student-name" class="name-input" placeholder="Voornaam Achternaam">
-                    
-                    <div class="certificate-preview">
-                        <p>Voorbeeld van je certificaat</p>
-                        <img src="images/logo-health-transparant1.png" alt="iXperium Health Logo">
-                        <p>Certificaat van Afronding</p>
-                        <p>Uitgereikt aan: [Jouw naam]</p>
+                    <div class="name-input-container">
+                        <label for="student-name">Vul je naam in voor op het certificaat:</label>
+                        <input type="text" id="student-name" class="name-input" placeholder="Voornaam Achternaam">
                     </div>
                     
                     <button class="btn btn-yellow" onclick="generatePDF()">Genereer en download certificaat</button>
@@ -561,6 +556,13 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // Initialize jsPDF
+        window.jspdf = window.jspdf || {};
+        if (typeof window.jspdf.jsPDF !== 'function') {
+            console.error('jsPDF is niet correct geladen');
+        }
+    </script>
     <script src="js/script.js"></script>
 </body>
 </html>

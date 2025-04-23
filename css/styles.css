@@ -639,3 +639,55 @@ img {
 .ixperium-section .video-container {
     margin: 25px 0;
 }
+
+/* Section 8 specific styles */
+#section8 .section-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+#section8 .section-content ul {
+    margin: 1.5rem 0;
+    padding-left: 2rem;
+}
+
+#section8 .section-content li {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+#section8 .pdf-generation {
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+#section8 .name-input-container {
+    margin: 2rem 0;
+}
+
+#section8 .name-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#section8 .btn-yellow {
+    background-color: #ffc107;
+    color: #000;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    margin: 1.5rem 0;
+}
+
+#section8 .small-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+}
