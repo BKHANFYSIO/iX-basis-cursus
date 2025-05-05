@@ -26,6 +26,18 @@ const questions = [
     }
 ];
 
+// --- Sidebar Navigatie Logica ---
+const chapters = [
+  { section: 1, title: 'Introductie' },
+  { section: 2, title: 'Soorten Zorgtechnologie' },
+  { section: 3, title: 'De Kracht van Technologie' },
+  { section: 4, title: 'Kritisch Kijken' },
+  { section: 5, title: 'Adoptie & Gedrag' },
+  { section: 6, title: 'Jij aan Zet' },
+  { section: 7, title: 'Vinden van Zorgtechnologie' },
+  { section: 8, title: 'Afsluiting' }
+];
+
 function updateProgress() {
     const progressPercentage = ((currentSection - 1) / (totalSections - 1)) * 100;
     
@@ -60,22 +72,26 @@ function showSection(sectionNumber) {
     window.scrollTo(0, 0);
     
     // Hide all sections first
-    const sections = document.querySelectorAll('.section');
+    const sections = document.querySelectorAll('section');
     sections.forEach(section => {
         section.style.display = 'none';
         section.classList.remove('active');
     });
     
     // Show the selected section
-    const targetSection = document.getElementById(`section${sectionNumber}`);
+    const targetSection = document.querySelector(`section[data-section="${sectionNumber}"]`);
     if (targetSection) {
         targetSection.style.display = 'block';
         targetSection.classList.add('active');
-    }
     
     // Update current section and progress
     currentSection = sectionNumber;
     updateProgress();
+    
+    // Sidebar: update active state
+    document.querySelectorAll('.sidebar-chapter').forEach(ch => ch.classList.remove('active'));
+    const activeSidebar = document.querySelector(`.sidebar-chapter[data-section="${sectionNumber}"]`);
+    if (activeSidebar) activeSidebar.classList.add('active');
     
     // Force scroll to top after a small delay to ensure DOM updates are complete
     setTimeout(() => {
@@ -84,6 +100,7 @@ function showSection(sectionNumber) {
             behavior: 'instant'
         });
     }, 50);
+    }
 }
 
 function nextSection() {
@@ -97,30 +114,6 @@ function prevSection() {
         showSection(currentSection - 1);
     }
 }
-
-// Initialize navigation and progress
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded');
-    // Add click handlers to chapter points
-    document.querySelectorAll('.chapter-point').forEach(point => {
-        point.addEventListener('click', function(e) {
-            e.preventDefault();
-            const sectionNumber = parseInt(this.getAttribute('data-section'));
-            showSection(sectionNumber);
-        });
-    });
-    
-    // Show first section and initialize progress
-    showSection(1);
-    
-    // Initialize Multiple Choice questions
-    initializeMultipleChoice();
-    
-    // Initialize Drag & Drop
-    initializeDragAndDrop();
-
-    console.log('Multiple Choice questions initialized'); // Debug log
-});
 
 // Multiple Choice functionality
 function initializeMultipleChoice() {
@@ -178,76 +171,97 @@ function initializeMultipleChoice() {
     });
 }
 
-// Make sure initializeMultipleChoice is called when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded');
-    initializeMultipleChoice();
-});
-
-// Drag & Drop functionality
+// --- Drag & Drop logica per hoofdstuk ---
 function initializeDragAndDrop() {
-    const draggables = document.querySelectorAll('.draggable');
-    const dropTargets = document.querySelectorAll('.drop-target');
-    
-    draggables.forEach(draggable => {
+    // Hoofdstuk 2
+    const draggables2 = document.querySelectorAll('#section2 .draggable');
+    const dropTargets2 = document.querySelectorAll('#section2 .drop-target');
+    draggables2.forEach(draggable => {
         draggable.setAttribute('draggable', true);
-        
         draggable.addEventListener('dragstart', function(e) {
             this.classList.add('dragging');
             e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
         });
-        
         draggable.addEventListener('dragend', function() {
             this.classList.remove('dragging');
         });
     });
-    
-    dropTargets.forEach(target => {
+    dropTargets2.forEach(target => {
         target.addEventListener('dragover', function(e) {
             e.preventDefault();
             this.classList.add('dragover');
         });
-        
         target.addEventListener('dragleave', function() {
             this.classList.remove('dragover');
         });
-        
         target.addEventListener('drop', function(e) {
             e.preventDefault();
             this.classList.remove('dragover');
-            
             const draggedId = e.dataTransfer.getData('text/plain');
-            const draggable = document.querySelector(`.draggable[data-id="${draggedId}"]`);
-            
-            // Remove from previous parent if exists
-            if (draggable.parentElement) {
+            const draggable = document.querySelector('#section2 .draggable[data-id="' + draggedId + '"]');
+            if (draggable && draggable.parentElement) {
                 draggable.parentElement.removeChild(draggable);
             }
-            
-            // Add to new target
             this.appendChild(draggable);
-            
-            // Check if all items are placed
-            checkDragDropResults();
+            checkDragDropResults2();
+        });
+    });
+
+    // Hoofdstuk 3
+    const draggables3 = document.querySelectorAll('#section3 .draggable');
+    const dropTargets3 = document.querySelectorAll('#section3 .drop-target');
+    draggables3.forEach(draggable => {
+        draggable.setAttribute('draggable', true);
+        draggable.addEventListener('dragstart', function(e) {
+            this.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', this.getAttribute('data-id'));
+        });
+        draggable.addEventListener('dragend', function() {
+            this.classList.remove('dragging');
+        });
+    });
+    dropTargets3.forEach(target => {
+        target.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        target.addEventListener('dragleave', function() {
+            this.classList.remove('dragover');
+        });
+        target.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const draggedId = e.dataTransfer.getData('text/plain');
+            const draggable = document.querySelector('#section3 .draggable[data-id="' + draggedId + '"]');
+            if (draggable && draggable.parentElement) {
+                draggable.parentElement.removeChild(draggable);
+            }
+            this.appendChild(draggable);
+            checkDragDropResults3();
         });
     });
 }
 
-function checkDragDropResults() {
-    const dropTargets = document.querySelectorAll('.drop-target');
+// Hoofdstuk 2: Categoriseer de Voorbeelden
+function checkDragDropResults2() {
+    const dropTargets = document.querySelectorAll('#section2 .drop-target');
     let correctCount = 0;
     let totalPlaced = 0;
-    
+    // Juiste combinaties:
+    // 1: Fysio.ai, 2: Blazepods, 3: Corpus VR, 4: Physitrack
+    const correctCombinations = {
+        '1': '1',
+        '2': '2',
+        '3': '3',
+        '4': '4'
+    };
     dropTargets.forEach(target => {
         const targetId = target.getAttribute('data-id');
         const draggable = target.querySelector('.draggable');
-        
         if (draggable) {
             totalPlaced++;
             const draggableId = draggable.getAttribute('data-id');
-            
-            // Check if the combination is correct
-            if (isCorrectCombination(targetId, draggableId)) {
+            if (correctCombinations[targetId] === draggableId) {
                 correctCount++;
                 draggable.classList.add('correct');
                 draggable.classList.remove('incorrect');
@@ -257,36 +271,90 @@ function checkDragDropResults() {
             }
         }
     });
-    
-    // Show feedback if all items are placed
+    // Feedback
+    let feedback = document.getElementById('dragdrop2-feedback');
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.id = 'dragdrop2-feedback';
+        feedback.className = 'dragdrop-feedback';
+        dropTargets[dropTargets.length-1].after(feedback);
+    }
     if (totalPlaced === dropTargets.length) {
-        const feedback = document.getElementById('dragdrop-feedback');
-        if (feedback) {
-            if (correctCount === totalPlaced) {
-                feedback.innerHTML = "Goed gedaan! Je hebt alle items correct geplaatst.";
-                feedback.classList.remove('incorrect');
-                feedback.classList.add('correct');
-            } else {
-                feedback.innerHTML = "Niet alle items zijn correct geplaatst. Probeer het opnieuw.";
-                feedback.classList.remove('correct');
-                feedback.classList.add('incorrect');
-            }
-            
-            // Save score
-            saveDragDropScore(correctCount, totalPlaced);
+        if (correctCount === totalPlaced) {
+            feedback.innerHTML = "Goed gedaan! Je hebt alle voorbeelden correct gecategoriseerd.";
+            feedback.classList.remove('incorrect');
+            feedback.classList.add('correct');
+        } else {
+            feedback.innerHTML = "Niet alle voorbeelden zijn correct geplaatst. Probeer het opnieuw.";
+            feedback.classList.remove('correct');
+            feedback.classList.add('incorrect');
         }
+        saveDragDropScore2(correctCount, totalPlaced);
+    } else {
+        feedback.innerHTML = '';
     }
 }
+function saveDragDropScore2(correct, total) {
+    localStorage.setItem('dragdrop2_correct', correct);
+    localStorage.setItem('dragdrop2_total', total);
+    updateAllChapterProgress();
+}
 
-function isCorrectCombination(targetId, draggableId) {
-    // Define correct combinations based on your specific exercise
+// Hoofdstuk 3: Koppel technologie aan voordelen
+function checkDragDropResults3() {
+    const dropTargets = document.querySelectorAll('#section3 .drop-target');
+    let correctCount = 0;
+    let totalPlaced = 0;
+    // Juiste combinaties:
+    // 1: Bewegingsanalyse-apps (Fysio.ai), 2: Virtual Reality (Corpus VR), 3: eHealth Platforms (Physitrack)
     const correctCombinations = {
-        '1': '2', // Example: target 1 should have draggable 2
-        '2': '3', // Example: target 2 should have draggable 3
-        '3': '1'  // Example: target 3 should have draggable 1
+        '1': '1', // Bewegingsanalyse-apps <-> Verhoogde therapietrouw
+        '2': '2', // Virtual Reality <-> Objectieve bewegingsanalyse
+        '3': '3'  // eHealth Platforms <-> Motiverende gameomgeving
     };
-    
-    return correctCombinations[targetId] === draggableId;
+    dropTargets.forEach(target => {
+        const targetId = target.getAttribute('data-id');
+        const draggable = target.querySelector('.draggable');
+        if (draggable) {
+            totalPlaced++;
+            const draggableId = draggable.getAttribute('data-id');
+            if (correctCombinations[targetId] === draggableId) {
+                correctCount++;
+                draggable.classList.add('correct');
+                draggable.classList.remove('incorrect');
+            } else {
+                draggable.classList.add('incorrect');
+                draggable.classList.remove('correct');
+            }
+        }
+    });
+    // Feedback
+    let feedback = document.getElementById('dragdrop3-feedback');
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.id = 'dragdrop3-feedback';
+        feedback.className = 'dragdrop-feedback';
+        dropTargets[dropTargets.length-1].after(feedback);
+    }
+    if (totalPlaced === dropTargets.length) {
+        if (correctCount === totalPlaced) {
+            feedback.innerHTML = "Goed gedaan! Je hebt alle technologieën correct gekoppeld aan de voordelen.";
+            feedback.classList.remove('incorrect');
+            feedback.classList.add('correct');
+        } else {
+            feedback.innerHTML = "Niet alle koppelingen zijn correct. Probeer het opnieuw.";
+            feedback.classList.remove('correct');
+            feedback.classList.add('incorrect');
+        }
+        saveDragDropScore3(correctCount, totalPlaced);
+    } else {
+        feedback.innerHTML = '';
+    }
+}
+function saveDragDropScore3(correct, total) {
+    localStorage.setItem('dragdrop3_correct', correct);
+    localStorage.setItem('dragdrop3_total', total);
+    updateAllChapterProgress();
 }
 
 // Reflection questions
@@ -318,432 +386,184 @@ function saveMCScore(questionNumber, correct, total) {
     localStorage.setItem('mc_total', 2);
 }
 
-function saveDragDropScore(correct, total) {
-    localStorage.setItem('dragdrop_correct', correct);
-    localStorage.setItem('dragdrop_total', total);
+function updateAllChapterProgress() {
+  let chapterProgress = Array(chapters.length).fill(0);
+  // Hoofdstuk 1: reflectie ingevuld = compleet
+  if (localStorage.getItem('reflection_1')) chapterProgress[0] = 1;
+  // Hoofdstuk 2: reflectie én dragdrop2 (beide = 1, één = 0.5)
+  let h2 = 0;
+  if (localStorage.getItem('reflection_2')) h2++;
+  const dragdrop2 = parseInt(localStorage.getItem('dragdrop2_correct') || 0);
+  if (dragdrop2 > 0) h2++;
+  if (h2 === 2) chapterProgress[1] = 1;
+  else if (h2 === 1) chapterProgress[1] = 0.5;
+  // Hoofdstuk 3: reflectie én dragdrop3 (beide = 1, één = 0.5)
+  let h3 = 0;
+  if (localStorage.getItem('reflection_3')) h3++;
+  const dragdrop3 = parseInt(localStorage.getItem('dragdrop3_correct') || 0);
+  if (dragdrop3 > 0) h3++;
+  if (h3 === 2) chapterProgress[2] = 1;
+  else if (h3 === 1) chapterProgress[2] = 0.5;
+  // ... bestaande code voor hoofdstuk 4 t/m 8 ...
+  let h4 = 0;
+  if (localStorage.getItem('reflection_4')) h4++;
+  if (localStorage.getItem('mc1_correct')) h4++;
+  if (localStorage.getItem('critical_analysis')) h4++;
+  if (h4 === 3) chapterProgress[3] = 1;
+  else if (h4 > 0) chapterProgress[3] = 0.5;
+  if (localStorage.getItem('reflection_5')) chapterProgress[4] = 1;
+  let h6 = 0;
+  if (localStorage.getItem('reflection_6')) h6++;
+  if (localStorage.getItem('self_assessment')) h6++;
+  if (h6 === 2) chapterProgress[5] = 1;
+  else if (h6 === 1) chapterProgress[5] = 0.5;
+  let h7 = 0;
+  if (localStorage.getItem('reflection_7')) h7++;
+  if (localStorage.getItem('mc2_correct')) h7++;
+  if (h7 === 2) chapterProgress[6] = 1;
+  else if (h7 === 1) chapterProgress[6] = 0.5;
+  const section8 = document.getElementById('section8');
+  if (section8) {
+    const answered = section8.querySelectorAll('.mc-option.selected').length;
+    if (answered === 3) chapterProgress[7] = 1;
+    else if (answered > 0) chapterProgress[7] = 0.5;
+  }
+  localStorage.setItem('chapterProgress', JSON.stringify(chapterProgress));
+  updateSidebarProgress();
 }
 
-// Save critical analysis
-function saveAnalysis() {
-    const techChoice = document.getElementById('tech-choice').value;
-    const strengths = document.getElementById('strengths').value;
-    const challenges = document.getElementById('challenges').value;
-    const implementation = document.getElementById('implementation').value;
+// Roep updateAllChapterProgress aan na elke relevante actie:
+// Reflectie
+const origSaveReflection = saveReflection;
+saveReflection = function(sectionNumber) {
+  origSaveReflection(sectionNumber);
+  updateAllChapterProgress();
+};
+// MC
+const origSaveMCScore = saveMCScore;
+saveMCScore = function(questionNumber, correct, total) {
+  origSaveMCScore(questionNumber, correct, total);
+  updateAllChapterProgress();
+};
 
-    if (!techChoice || !strengths || !challenges || !implementation) {
-        alert('Vul alstublieft alle velden in voordat je de analyse opslaat.');
-        return;
+function updateSidebarProgress() {
+  // Simuleer voortgang per hoofdstuk (vervang door echte logica)
+  // 0 = niet begonnen, 0.5 = deels, 1 = compleet
+  let chapterProgress = JSON.parse(localStorage.getItem('chapterProgress')) || Array(chapters.length).fill(0);
+  let completed = chapterProgress.filter(p => p === 1).length;
+  let half = chapterProgress.filter(p => p === 0.5).length;
+  let total = chapters.length;
+  let percent = Math.round((completed + 0.5 * half) / total * 100);
+
+  // Update cirkels
+  chapters.forEach((ch, idx) => {
+    const circle = document.getElementById(`circle-${ch.section}`);
+    circle.classList.remove('completed', 'half');
+    if (chapterProgress[idx] === 1) {
+      circle.classList.add('completed');
+    } else if (chapterProgress[idx] === 0.5) {
+      circle.classList.add('half');
     }
+  });
 
-    const analysis = {
-        techChoice,
-        strengths,
-        challenges,
-        implementation,
-        timestamp: new Date().toISOString()
-    };
-
-    localStorage.setItem('critical_analysis', JSON.stringify(analysis));
-    alert('Je kritische analyse is opgeslagen!');
+  // Update visuele voortgang
+  const visual = document.getElementById('sidebarProgressVisual');
+  if (visual) {
+    visual.style.background = `conic-gradient(var(--primary-purple) 0% ${percent}%, var(--medium-gray) ${percent}% 100%)`;
+  }
+  const text = document.getElementById('sidebarProgressText');
+  if (text) text.textContent = percent + '%';
 }
 
-// Save self-assessment
-function saveSelfAssessment() {
-    const veranderen = document.getElementById('veranderen').value;
-    const vinden = document.getElementById('vinden').value;
-    const vertrouwen = document.getElementById('vertrouwen').value;
-    const vaardig = document.getElementById('vaardig').value;
-    const vertellen = document.getElementById('vertellen').value;
-
-    if (!veranderen || !vinden || !vertrouwen || !vaardig || !vertellen) {
-        alert('Vul alstublieft alle competenties in voordat je de zelfbeoordeling opslaat.');
-        return;
-    }
-
-    const assessment = {
-        veranderen,
-        vinden,
-        vertrouwen,
-        vaardig,
-        vertellen,
-        timestamp: new Date().toISOString()
-    };
-
-    localStorage.setItem('self_assessment', JSON.stringify(assessment));
-    alert('Je zelfbeoordeling is opgeslagen!');
+function setChapterProgress(section, value) {
+  let chapterProgress = JSON.parse(localStorage.getItem('chapterProgress')) || Array(chapters.length).fill(0);
+  chapterProgress[section - 1] = value;
+  localStorage.setItem('chapterProgress', JSON.stringify(chapterProgress));
+  updateSidebarProgress();
 }
 
-// Update checkUnansweredQuestions to include critical analysis and self-assessment
-function checkUnansweredQuestions() {
-    const unansweredSections = [];
-    
-    // Check reflection questions
-    for (let i = 1; i <= 7; i++) {
-        const answer = localStorage.getItem(`reflection_${i}`);
-        if (!answer || answer.trim() === '') {
-            unansweredSections.push(i);
-        }
-    }
-    
-    // Check critical analysis
-    const criticalAnalysis = localStorage.getItem('critical_analysis');
-    if (!criticalAnalysis) {
-        unansweredSections.push(4);
-    }
-    
-    // Check self-assessment
-    const selfAssessment = localStorage.getItem('self_assessment');
-    if (!selfAssessment) {
-        unansweredSections.push(6);
-    }
-    
-    // Check MC questions in section 4
-    const mc1Correct = localStorage.getItem('mc1_correct');
-    if (mc1Correct === null) unansweredSections.push(4);
-    
-    // Check MC questions in section 7
-    const mc2Correct = localStorage.getItem('mc2_correct');
-    if (mc2Correct === null) unansweredSections.push(7);
-    
-    // Check Drag & Drop
-    const dragDropCorrect = localStorage.getItem('dragdrop_correct');
-    if (dragDropCorrect === null) unansweredSections.push(3);
-    
-    // Check final assessment questions
-    const finalAssessmentAnswers = document.querySelectorAll('#section8 .mc-option.selected');
-    if (finalAssessmentAnswers.length < 3) {
-        unansweredSections.push(8);
-    }
-    
-    // Remove duplicates and sort
-    return [...new Set(unansweredSections)].sort((a, b) => a - b);
+function setupSidebarNavigation() {
+  const sidebarChapters = document.querySelectorAll('.sidebar-chapter');
+  sidebarChapters.forEach(chapter => {
+    chapter.addEventListener('click', function() {
+      const section = parseInt(this.getAttribute('data-section'));
+      showSection(section);
+    });
+  });
 }
 
-function generatePDF() {
-    const studentName = document.getElementById('student-name').value;
-    if (!studentName) {
-        alert('Vul alstublieft je naam in voordat je het certificaat genereert.');
-        return;
+function setupSidebarHamburger() {
+  console.log('Setting up sidebar hamburger...'); // Debug log
+  const sidebarHamburger = document.getElementById('sidebarHamburger');
+  const floatingHamburger = document.getElementById('floatingHamburger'); // Get the floating button
+  const sidebar = document.getElementById('sidebarNav');
+
+  if (!sidebar) {
+    console.error('Sidebar element #sidebarNav not found!');
+    return;
+  }
+
+  function toggleSidebar(event) {
+    console.log('Toggle sidebar triggered by:', event.currentTarget.id); // Debug log
+    sidebar.classList.toggle('open');
+    document.body.classList.toggle('sidebar-open');
+  }
+
+  if (sidebarHamburger) {
+      console.log('Found sidebarHamburger, adding listener.'); // Debug log
+      sidebarHamburger.addEventListener('click', toggleSidebar);
+  } else {
+      console.warn('Sidebar hamburger element #sidebarHamburger not found.'); // Debug log
+  }
+
+  if (floatingHamburger) {
+      console.log('Found floatingHamburger, adding listener.'); // Debug log
+      floatingHamburger.addEventListener('click', toggleSidebar); // Add listener to floating button
+  } else {
+      console.warn('Floating hamburger element #floatingHamburger not found.'); // Debug log
+  }
+
+  // Sluit sidebar bij klik buiten (mobiel)
+  document.addEventListener('click', function(e) {
+    // Check if sidebar exists and is open, and if the click was outside
+    if (sidebar && sidebar.classList.contains('open') && window.innerWidth <= 900) {
+        // Check if the click target is NOT the sidebar or inside it,
+        // AND NOT one of the hamburger buttons or inside them.
+        const isClickInsideSidebar = sidebar.contains(e.target);
+        const isClickOnSidebarHamburger = sidebarHamburger && sidebarHamburger.contains(e.target);
+        const isClickOnFloatingHamburger = floatingHamburger && floatingHamburger.contains(e.target);
+
+        if (!isClickInsideSidebar && !isClickOnSidebarHamburger && !isClickOnFloatingHamburger) {
+            console.log('Click outside detected, closing sidebar.'); // Debug log
+            sidebar.classList.remove('open');
+            document.body.classList.remove('sidebar-open');
+       }
     }
-    
-    const unansweredSections = checkUnansweredQuestions();
-    if (unansweredSections.length > 0) {
-        const sectionNames = {
-            1: "Introductie",
-            2: "Soorten Zorgtechnologie",
-            3: "De Kracht van Technologie",
-            4: "Kritisch Kijken",
-            5: "Adoptie & Gedrag",
-            6: "Jij aan Zet",
-            7: "Vinden van Zorgtechnologie",
-            8: "Afsluiting"
-        };
-        
-        const unansweredList = unansweredSections.map(section => 
-            `- Hoofdstuk ${section}: ${sectionNames[section]}`
-        ).join('\n');
-        
-        const proceed = confirm(
-            `Je hebt nog niet alle vragen beantwoord in de volgende hoofdstukken:\n\n${unansweredList}\n\nWil je toch doorgaan met het genereren van het certificaat?`
-        );
-        
-        if (!proceed) {
-            return;
-        }
-    }
-    
-    try {
-        // Load the logo image first
-        const img = new Image();
-        img.src = 'images/logo-health-transparant1.png';
-        
-        img.onload = function() {
-            const currentDate = new Date().toLocaleDateString('nl-NL');
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-            
-            // Convert the loaded image to a data URL
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            const logoDataUrl = canvas.toDataURL('image/png');
-            
-            // Certificaat pagina
-            doc.addImage(logoDataUrl, 'PNG', 20, 20, 40, 10);
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(22);
-            doc.setTextColor(123, 32, 130); // Paars #7b2082
-            doc.text('Certificaat van Afronding', 105, 60, { align: 'center' });
-            doc.setFontSize(18);
-            doc.text('Basis E-learning Zorgtechnologie in de Fysiotherapie', 105, 70, { align: 'center' });
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(16);
-            doc.setTextColor(0, 0, 0);
-            doc.text('Dit certificaat is uitgereikt aan:', 105, 90, { align: 'center' });
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(20);
-            doc.setTextColor(0, 161, 154); // Turquoise #00a19a
-            doc.text(studentName, 105, 105, { align: 'center' });
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(14);
-            doc.setTextColor(0, 0, 0);
-            doc.text('Datum van afronding:', 105, 125, { align: 'center' });
-            doc.text(currentDate, 105, 135, { align: 'center' });
-            
-            // Voeg leerdoelen toe aan het voorblad
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(14);
-            doc.setTextColor(123, 32, 130); // Paars #7b2082
-            doc.text('Leerdoelen van deze e-learning:', 20, 160);
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(10);
-            doc.setTextColor(0, 0, 0);
-            
-            const learningObjectives = [
-                "1. De relevantie en urgentie van zorgtechnologie voor de fysiotherapie uitleggen, gekoppeld aan maatschappelijke uitdagingen.",
-                "2. Concrete voorbeelden van zorgtechnologie herkennen en hun potentiële toepassing benoemen.",
-                "3. De belangrijkste voordelen van zorgtechnologie in de fysiotherapie benoemen.",
-                "4. Kritisch nadenken over de selectie en implementatie van zorgtechnologie.",
-                "5. Het Technology Acceptance Model (TAM) uitleggen en de link leggen met gedragsverandering.",
-                "6. Het V-model voor digitale competenties in de zorg uitleggen en de relevantie erkennen.",
-                "7. Betrouwbare bronnen voor zorgtechnologie informatie vinden.",
-                "8. Reflecteren op je eigen houding en vaardigheden t.o.v. zorgtechnologie."
-            ];
-            
-            let yPosition = 170;
-            learningObjectives.forEach(objective => {
-                if (yPosition > 250) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-                const splitObjective = doc.splitTextToSize(objective, 170);
-                doc.text(splitObjective, 20, yPosition);
-                yPosition += splitObjective.length * 5 + 5;
-            });
-            
-            // Reflecties pagina's
-            doc.addPage();
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(18);
-            doc.setTextColor(123, 32, 130); // Paars #7b2082
-            doc.text('Mijn Reflecties en Resultaten', 105, 20, { align: 'center' });
-            
-            yPosition = 40;
-            
-            // Voor elke sectie met reflectievraag
-            for (let i = 1; i <= 7; i++) {
-                const reflectionQuestion = getReflectionQuestion(i);
-                const reflectionAnswer = getReflectionAnswer(i);
-                
-                if (yPosition > 250) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-                
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(14);
-                doc.setTextColor(0, 161, 154); // Turquoise #00a19a
-                doc.text(`Sectie ${i}:`, 20, yPosition);
-                yPosition += 10;
-                
-                doc.setFont('helvetica', 'italic');
-                doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0);
-                
-                const splitQuestion = doc.splitTextToSize(reflectionQuestion, 170);
-                doc.text(splitQuestion, 20, yPosition);
-                yPosition += splitQuestion.length * 7;
-                
-                doc.setFont('helvetica', 'normal');
-                
-                const splitAnswer = doc.splitTextToSize(reflectionAnswer, 170);
-                doc.text(splitAnswer, 20, yPosition);
-                yPosition += splitAnswer.length * 7 + 15;
-            }
-            
-            // Voeg resultaten van interactieve elementen toe
-            if (yPosition > 220) {
-                doc.addPage();
-                yPosition = 20;
-            }
-            
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(14);
-            doc.setTextColor(123, 32, 130); // Paars #7b2082
-            doc.text('Resultaten van interactieve oefeningen:', 20, yPosition);
-            yPosition += 10;
-            
-            doc.setFont('helvetica', 'normal');
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            
-            const mcScore = getMCScore();
-            doc.text(`Multiple Choice vragen: ${mcScore.correct} van ${mcScore.total} correct`, 20, yPosition);
-            yPosition += 10;
-            
-            const dragDropScore = getDragDropScore();
-            doc.text(`Drag & Drop oefening: ${dragDropScore.correct} van ${dragDropScore.total} correct geplaatst`, 20, yPosition);
-            yPosition += 10;
-            
-            // Add final assessment results
-            const finalAssessmentAnswers = document.querySelectorAll('#section8 .mc-option.selected');
-            const correctAnswers = Array.from(finalAssessmentAnswers).filter(option => {
-                const questionId = option.closest('.mc-question').querySelector('.feedback').id.split('-')[0];
-                const question = questions.find(q => q.id === questionId);
-                return parseInt(option.getAttribute('data-id')) === question.correctAnswer;
-            }).length;
-            
-            doc.text(`Eindtoets: ${correctAnswers} van 3 vragen correct`, 20, yPosition);
-            
-            // Add critical analysis to PDF
-            const criticalAnalysis = JSON.parse(localStorage.getItem('critical_analysis') || '{}');
-            if (criticalAnalysis.techChoice) {
-                if (yPosition > 220) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-                
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(14);
-                doc.setTextColor(123, 32, 130);
-                doc.text('Kritische Analyse:', 20, yPosition);
-                yPosition += 10;
-                
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0);
-                
-                doc.text(`Gekozen technologie: ${criticalAnalysis.techChoice}`, 20, yPosition);
-                yPosition += 10;
-                
-                const strengths = doc.splitTextToSize(`Sterke punten: ${criticalAnalysis.strengths}`, 170);
-                doc.text(strengths, 20, yPosition);
-                yPosition += strengths.length * 7;
-                
-                const challenges = doc.splitTextToSize(`Uitdagingen: ${criticalAnalysis.challenges}`, 170);
-                doc.text(challenges, 20, yPosition);
-                yPosition += challenges.length * 7;
-                
-                const implementation = doc.splitTextToSize(`Implementatieplan: ${criticalAnalysis.implementation}`, 170);
-                doc.text(implementation, 20, yPosition);
-                yPosition += implementation.length * 7 + 15;
-            }
-            
-            // Add self-assessment to PDF
-            const selfAssessment = JSON.parse(localStorage.getItem('self_assessment') || '{}');
-            if (selfAssessment.veranderen) {
-                if (yPosition > 220) {
-                    doc.addPage();
-                    yPosition = 20;
-                }
-                
-                doc.setFont('helvetica', 'bold');
-                doc.setFontSize(14);
-                doc.setTextColor(123, 32, 130);
-                doc.text('Zelfbeoordeling V-competenties:', 20, yPosition);
-                yPosition += 10;
-                
-                doc.setFont('helvetica', 'normal');
-                doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0);
-                
-                doc.text(`Veranderen: Niveau ${selfAssessment.veranderen}`, 20, yPosition);
-                yPosition += 10;
-                doc.text(`Vinden: Niveau ${selfAssessment.vinden}`, 20, yPosition);
-                yPosition += 10;
-                doc.text(`Vertrouwen: Niveau ${selfAssessment.vertrouwen}`, 20, yPosition);
-                yPosition += 10;
-                doc.text(`Vaardig gebruiken: Niveau ${selfAssessment.vaardig}`, 20, yPosition);
-                yPosition += 10;
-                doc.text(`Vertellen: Niveau ${selfAssessment.vertellen}`, 20, yPosition);
-                yPosition += 15;
-            }
-            
-            // Download de PDF
-            doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);
-        };
-        
-        img.onerror = function() {
-            console.error('Error loading logo image');
-            alert('Er is een probleem met het laden van het logo. Het certificaat wordt gegenereerd zonder logo.');
-            generatePDFWithoutLogo(studentName);
-        };
-        
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Er is een fout opgetreden bij het genereren van het PDF-bestand. Probeer het later opnieuw.');
-    }
+  });
 }
 
-// Backup function to generate PDF without logo
-function generatePDFWithoutLogo(studentName) {
-    try {
-        const currentDate = new Date().toLocaleDateString('nl-NL');
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
-        });
-        
-        // Skip logo and start with title
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(22);
-        doc.setTextColor(123, 32, 130); // Paars #7b2082
-        doc.text('Certificaat van Afronding', 105, 60, { align: 'center' });
-        
-        // ... rest of the PDF generation code ...
-        
-        // Download de PDF
-        doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);
-        
-    } catch (error) {
-        console.error('Error generating PDF without logo:', error);
-        alert('Er is een fout opgetreden bij het genereren van het PDF-bestand. Probeer het later opnieuw.');
-    }
-}
+// --- SINGLE DOMContentLoaded Listener ---
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM Content Loaded - Initializing all components');
 
-// Helper functies
-function getReflectionQuestion(sectionNumber) {
-    const questions = {
-        1: "Welke van de genoemde uitdagingen in de zorg verwacht jij het meest tegen te komen in je toekomstige werkveld, en waarom?",
-        2: "Welk van deze vijf voorbeelden lijkt jou het meest vernieuwend of interessant voor de fysiotherapie? Licht kort toe waarom.",
-        3: "Stel je voor dat je één van deze voordelen direct zou kunnen toepassen in een stage-casus. Welk voordeel kies je en waarom?",
-        4: "Privacy en veiligheid zijn belangrijke thema's. Welke vraag over privacy zou jij stellen voordat je een nieuwe zorg-app aan een patiënt aanbeveelt?",
-        5: "Denkend aan het TAM-model: wat denk jij dat voor fysiotherapeuten zwaarder weegt bij het adopteren van nieuwe technologie: het verwachte nut (Usefulness) of het gebruiksgemak (Ease of Use)? Waarom denk je dat?",
-        6: "Het V-model benadrukt verschillende competentiegebieden. Op welk gebied zou jij jezelf de komende twee jaar het meest willen ontwikkelen met betrekking tot technologie?",
-        7: "Bekijk de lijst met bronnen. Welke bron ga je na deze e-learning als eerste bekijken en wat hoop je daar te vinden?"
-    };
-    return questions[sectionNumber] || "";
-}
+  // Initialize basic navigation first
+  setupSidebarNavigation(); // Sets up clicks on chapter titles
+  setupSidebarHamburger();  // Sets up clicks on BOTH hamburger buttons
 
-function getReflectionAnswer(sectionNumber) {
-    // Haal het antwoord op uit de opgeslagen gebruikersgegevens
-    return localStorage.getItem(`reflection_${sectionNumber}`) || "Geen antwoord gegeven";
-}
+  // Initialize interactive elements
+  initializeMultipleChoice();
+  initializeDragAndDrop();
 
-function getMCScore() {
-    // Haal de score op uit de opgeslagen gebruikersgegevens
-    return {
-        correct: parseInt(localStorage.getItem('mc_correct') || 0),
-        total: 2
-    };
-}
+  // Set initial state
+  updateSidebarProgress(); // Calculate initial progress display
+  showSection(1);          // Show the first section
+  updateAllChapterProgress(); // Ensure progress reflects any loaded data
 
-function getDragDropScore() {
-    // Haal de score op uit de opgeslagen gebruikersgegevens
-    return {
-        correct: parseInt(localStorage.getItem('dragdrop_correct') || 0),
-        total: 3
-    };
-}
+  console.log('All initializations complete.');
+});
+
+// Voorbeeld: markeer hoofdstuk als half of compleet (vervang door echte logica)
+// setChapterProgress(1, 1); // Hoofdstuk 1 compleet
+// setChapterProgress(2, 0.5); // Hoofdstuk 2 half
+// setChapterProgress(3, 0); // Hoofdstuk 3 niet begonnen
+
