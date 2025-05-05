@@ -1918,25 +1918,26 @@ img {
 /* Mobiel: sidebar als overlay met hamburger */
 @media (max-width: 900px) {
   .sidebar-nav {
-    position: fixed;
-    top: 0;
-    left: -280px; /* Start offscreen */
-    width: 280px;
-    height: 100vh;
-    background: #ffffff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    z-index: 1100;
-    transition: left 0.3s ease, transform 0.3s ease;
+    position: fixed !important;
+    top: 0 !important;
+    left: -280px !important; /* Start offscreen */
+    width: 280px !important;
+    height: 100vh !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    padding: 20px !important;
+    z-index: 1100 !important;
+    transition: left 0.3s ease !important;
     display: flex !important;
     flex-direction: column !important;
-    overflow-y: auto;
+    overflow-y: auto !important;
+    pointer-events: none !important; /* Prevent interactions when closed */
   }
 
   .sidebar-nav.open {
-    left: 0;
-    transform: none;
-    box-shadow: 2px 0 8px rgba(102,36,131,0.15);
+    left: 0 !important;
+    box-shadow: 2px 0 8px rgba(102,36,131,0.15) !important;
+    pointer-events: auto !important; /* Enable interactions when open */
   }
 
   /* Ensure content elements inside sidebar are visible */
@@ -1953,10 +1954,34 @@ img {
   .sidebar-chapter {
     display: flex !important;
     align-items: center;
-    padding: 12px 0;
+    gap: 12px; /* Add spacing between circle and title */
+    padding: 12px 8px;
     cursor: pointer;
     transition: 0.2s;
     border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* Fix chapter title display in mobile view */
+  .sidebar-chapter .chapter-title {
+    display: block !important;
+    font-size: 1rem;
+    color: var(--dark-gray);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  .sidebar-chapter .chapter-circle {
+    min-width: 30px;
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
   
   .sidebar-chapter:hover {
@@ -1972,7 +1997,7 @@ img {
   body.sidebar-open .sidebar-overlay {
     display: block;
     opacity: 1;
-    z-index: 1000; /* Ensure below sidebar */
+    z-index: 1050; /* Match the overlay z-index */
   }
   
   .floating-hamburger {
@@ -2015,7 +2040,7 @@ img {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  z-index: 1050; /* Between regular content and sidebar */
   display: none;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
@@ -2121,4 +2146,17 @@ header {
   height: 2px;
   background: #ffffff;
   transition: 0.3s;
+}
+
+/* Add animation for hamburger to X when sidebar is open */
+body.sidebar-open .floating-hamburger .hamburger-lines span:nth-child(1) {
+  transform: rotate(45deg) translate(4px, 4px);
+}
+
+body.sidebar-open .floating-hamburger .hamburger-lines span:nth-child(2) {
+  opacity: 0;
+}
+
+body.sidebar-open .floating-hamburger .hamburger-lines span:nth-child(3) {
+  transform: rotate(-45deg) translate(4px, -4px);
 }
