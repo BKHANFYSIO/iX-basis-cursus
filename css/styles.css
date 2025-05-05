@@ -2023,12 +2023,14 @@ img {
   }
   
   .sticky-wrapper {
-    display: none;
+    display: block !important;
+    position: static !important; /* remove sticky behaviour on mobile */
+    width: auto !important;
+    height: auto !important;
   }
   
   .main-layout {
-    grid-template-columns: 1fr !important;
-    grid-template-areas: "content" !important;
+    display: block !important;
   }
 }
 
@@ -2057,12 +2059,7 @@ body.sidebar-open .sidebar-overlay {
 }
 
 .main-layout {
-  display: grid;
-  grid-template-columns: 270px 1fr;
-  grid-template-rows: 1fr;
-  grid-template-areas:
-    "sidebar content";
-  min-height: 100vh;
+  display: block !important;
 }
 
 .sticky-wrapper {
