@@ -1763,53 +1763,35 @@ img {
 
 /* --- Verticale Sidebar Navigatie --- */
 .sidebar-nav {
+  width: 280px;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   position: fixed;
   top: 0;
   left: 0;
-  width: 270px;
-  height: 100vh;
-  background: var(--white);
-  box-shadow: 2px 0 8px rgba(102,36,131,0.07);
-  z-index: 1100;
   display: flex;
   flex-direction: column;
-  padding: 0 0 0 0;
-  border-right: 1px solid var(--medium-gray);
-  transition: transform 0.3s ease-in-out;
-  overflow-y: auto;
+  z-index: 1000;
 }
 
 .sidebar-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 24px 24px 12px 24px;
-  border-bottom: 1px solid var(--medium-gray);
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .sidebar-title {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-size: 1.2rem;
+  font-weight: 600;
   color: var(--primary-purple);
-  letter-spacing: 0.5px;
 }
 
+/* Desktop doesn't show hamburger inside sidebar */
 .sidebar-hamburger {
   display: none;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.sidebar-hamburger span {
-  display: block;
-  width: 24px;
-  height: 3px;
-  background: var(--primary-purple);
-  border-radius: 2px;
 }
 
 .sidebar-chapters {
@@ -1830,11 +1812,11 @@ img {
   gap: 16px;
   padding: 12px 24px;
   cursor: pointer;
+  transition: background 0.2s;
   border-left: 4px solid transparent;
-  transition: background 0.2s, border-color 0.2s;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+  margin: 0;
+  box-sizing: border-box;
+  position: relative;
 }
 
 .sidebar-chapter.active,
@@ -1844,6 +1826,7 @@ img {
 }
 
 .chapter-circle {
+  min-width: 36px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1856,7 +1839,8 @@ img {
   align-items: center;
   justify-content: center;
   transition: background 0.3s, border 0.3s, color 0.3s;
-  position: relative;
+  flex-shrink: 0; /* Voorkomt dat de cirkel vervormt */
+  box-sizing: border-box;
 }
 
 .chapter-circle.completed {
@@ -1866,9 +1850,22 @@ img {
 }
 
 .chapter-circle.half {
-  background: linear-gradient(90deg, #FFD600 50%, #fff 50%);
+  position: relative;
+  overflow: hidden;
   color: var(--primary-purple);
   border-color: #FFD600;
+}
+
+/* Fix voor de halve circle met een pseudo-element in plaats van gradient */
+.chapter-circle.half:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: #FFD600;
+  z-index: -1;
 }
 
 .chapter-title {
@@ -1921,51 +1918,51 @@ img {
 /* Mobiel: sidebar als overlay met hamburger */
 @media (max-width: 900px) {
   .sidebar-nav {
-    /* Keep existing transform: translateX(-100%); pointer-events: none; */
-    /* Ensure required container styles are set */
-    display: flex !important; /* Ensure flex display */
-    flex-direction: column !important; /* Ensure vertical stack */
-    height: 100vh !important; /* Full viewport height */
-    overflow: hidden; /* Hide overflow initially */
-    left: 0 !important; /* Position correctly for transform */
-    background: var(--white); /* Ensure background */
-    z-index: 1100; /* Ensure above overlay */
+    position: fixed;
+    top: 0;
+    left: -280px; /* Start offscreen */
+    width: 280px;
+    height: 100vh;
+    background: #ffffff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1100;
+    transition: left 0.3s ease, transform 0.3s ease;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto;
   }
 
   .sidebar-nav.open {
-    transform: translateX(0) !important; /* Slide in */
-    pointer-events: auto !important;
-    overflow-y: auto !important; /* Allow scrolling when open */
-    box-shadow: 2px 0 8px rgba(102,36,131,0.15); /* Add shadow for visibility */
+    left: 0;
+    transform: none;
+    box-shadow: 2px 0 8px rgba(102,36,131,0.15);
   }
 
-  /* Ensure content elements inside OPEN sidebar are definitely visible and laid out */
-  .sidebar-nav.open .sidebar-header {
+  /* Ensure content elements inside sidebar are visible */
+  .sidebar-chapters {
+    display: block !important;
+    flex-grow: 1 !important;
+    overflow-y: auto !important;
+    max-height: calc(100vh - 180px);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  
+  .sidebar-chapter {
     display: flex !important;
-    flex-shrink: 0; /* Prevent shrinking */
-    visibility: visible !important;
-    opacity: 1 !important;
+    align-items: center;
+    padding: 12px 0;
+    cursor: pointer;
+    transition: 0.2s;
+    border-bottom: 1px solid #f0f0f0;
   }
-  .sidebar-nav.open .sidebar-chapters {
-    display: block !important; /* Allow block-level content */
-    flex-grow: 1 !important; /* Take available space */
-    overflow-y: auto !important; /* Scroll if needed */
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto; /* Let flexbox determine height */
+  
+  .sidebar-chapter:hover {
+    background-color: rgba(102,36,131,0.05);
   }
-   .sidebar-nav.open .sidebar-chapter {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-  .sidebar-nav.open .sidebar-progress {
-    display: flex !important;
-    flex-shrink: 0; /* Prevent shrinking */
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
+
   /* Hide the hamburger button that's *inside* the sidebar header */
   .sidebar-header .sidebar-hamburger {
     display: none !important;
@@ -1977,22 +1974,56 @@ img {
     opacity: 1;
     z-index: 1000; /* Ensure below sidebar */
   }
+  
   .floating-hamburger {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 60px;
+    height: 60px;
+    background: var(--primary-purple);
+    border-radius: 50%;
     display: flex !important;
-    z-index: 1200; /* Ensure above all */
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1200;
   }
+  
   .content-area,
   .container,
   .header-content {
     margin-left: 0 !important;
   }
+  
   .sticky-wrapper {
     display: none;
   }
+  
   .main-layout {
     grid-template-columns: 1fr !important;
     grid-template-areas: "content" !important;
   }
+}
+
+/* Sidebar overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+body.sidebar-open .sidebar-overlay {
+  display: block;
+  opacity: 1;
 }
 
 /* Zorg dat de oude horizontale navigatie niet meer zichtbaar is */
@@ -2050,39 +2081,6 @@ header {
   padding: 0 20px;
 }
 
-@media (max-width: 900px) {
-  .main-layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "content";
-  }
-  .sticky-wrapper {
-    position: static;
-    width: 100%;
-    height: auto;
-    grid-area: unset;
-  }
-  .sidebar-nav {
-    position: fixed;
-    left: -270px;
-    top: 0;
-    width: 270px;
-    height: 100vh;
-    z-index: 2000;
-    transition: left 0.3s;
-  }
-  .sidebar-nav.open {
-    left: 0;
-  }
-  .content-area {
-    grid-area: content;
-  }
-  .container {
-    max-width: 100vw;
-    padding-left: 0;
-  }
-}
-
 .header-content,
 .container {
   width: 100%;
@@ -2093,131 +2091,34 @@ header {
   box-sizing: border-box;
 }
 
-/* Responsive Sidebar Styles */
-@media screen and (max-width: 768px) {
-    /* REMOVE ALL rules related to: */
-    /* .sidebar-nav transform/left/.active */
-    /* .floating-hamburger display/left/top/z-index/.active */
-    /* .sidebar-overlay display */
-    /* body.sidebar-active */
-    /* .main-layout margin */
-    /* .content-area padding/margin */
-    /* Keep only fine-tuning styles if necessary (e.g., smaller padding/font) */
-}
-
-/* Sidebar base styles */
-.sidebar-nav {
-    width: 280px;
-    height: 100vh;
-    background: #ffffff;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    transition: transform 0.3s ease-in-out;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Floating hamburger button */
-.floating-hamburger {
-    position: fixed;
-    left: 20px;
-    bottom: 20px;
-    width: 60px;
-    height: 60px;
-    background: #007bff;
-    border-radius: 50%;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1200;
-}
-
+/* Floating hamburger button styles */
 .floating-hamburger .progress-ring {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .floating-hamburger .progress-ring circle {
-    fill: none;
-    stroke: #ffffff;
-    stroke-width: 4;
-    stroke-linecap: round;
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
 }
 
 .floating-hamburger .hamburger-lines {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
 }
 
 .floating-hamburger .hamburger-lines span {
-    width: 20px;
-    height: 2px;
-    background: #ffffff;
-    transition: 0.3s;
-}
-
-/* Media query for mobile */
-@media screen and (max-width: 768px) {
-    .sidebar-nav {
-        transform: translateX(-100%);
-    }
-
-    .sidebar-nav.active {
-        transform: translateX(0);
-    }
-
-    .floating-hamburger {
-        display: flex;
-    }
-
-    .main-layout {
-        margin-left: 0 !important;
-    }
-
-    body.sidebar-active .floating-hamburger {
-        left: 300px;
-    }
-
-    body.sidebar-active .floating-hamburger .hamburger-lines span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-
-    body.sidebar-active .floating-hamburger .hamburger-lines span:nth-child(2) {
-        opacity: 0;
-    }
-
-    body.sidebar-active .floating-hamburger .hamburger-lines span:nth-child(3) {
-        transform: rotate(-45deg) translate(5px, -5px);
-    }
-
-    .content-area {
-        padding-left: 20px !important;
-    }
-}
-
-/* Overlay for mobile when sidebar is active */
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+  width: 20px;
+  height: 2px;
+  background: #ffffff;
+  transition: 0.3s;
 }
