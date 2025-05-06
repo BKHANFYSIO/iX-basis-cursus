@@ -567,3 +567,165 @@ document.addEventListener('DOMContentLoaded', function() {
 // setChapterProgress(2, 0.5); // Hoofdstuk 2 half
 // setChapterProgress(3, 0); // Hoofdstuk 3 niet begonnen
 
+async function generatePDF() {
+    const studentName = document.getElementById('student-name').value.trim();
+    
+    if (!studentName) {
+        alert('Vul alstublieft uw naam in voordat u het certificaat genereert.');
+        return;
+    }
+
+    // Maak een nieuwe jsPDF instantie
+    const doc = new jspdf.jsPDF({
+        orientation: 'landscape',
+        unit: 'mm',
+        format: 'a4'
+    });
+
+    // --- CERTIFICAAT PAGINA ---
+    // Stel het lettertype en de kleuren in
+    doc.setFont('helvetica');
+    doc.setTextColor(44, 62, 80); // Donkerblauw
+
+    // Voeg de titel toe
+    doc.setFontSize(30);
+    doc.text('Certificaat van Voltooiing', 148.5, 40, { align: 'center' });
+
+    // Voeg de cursus naam toe
+    doc.setFontSize(20);
+    doc.text('Basis E-learning Zorgtechnologie', 148.5, 60, { align: 'center' });
+
+    // Voeg de student naam toe
+    doc.setFontSize(24);
+    doc.text(studentName, 148.5, 90, { align: 'center' });
+
+    // Voeg de beschrijving toe
+    doc.setFontSize(12);
+    const description = 'heeft succesvol de basis e-learning zorgtechnologie afgerond\nen heeft aangetoond de benodigde kennis en vaardigheden te beheersen\nom zorgtechnologie in de fysiotherapie te begrijpen en toe te passen.';
+    doc.text(description, 148.5, 105, { align: 'center' });
+
+    // Voeg de datum toe
+    const date = new Date().toLocaleDateString('nl-NL', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+    doc.setFontSize(12);
+    doc.text(`Datum: ${date}`, 148.5, 130, { align: 'center' });
+
+    // Voeg de iXperium Health tekst toe
+    doc.setFontSize(10);
+    doc.text('iXperium Health - HAN University of Applied Sciences', 148.5, 180, { align: 'center' });
+
+    // --- BIJLAGEN ---
+    // Nieuwe pagina voor bijlagen
+    doc.addPage('a4', 'p'); // Portrait orientation for attachments
+
+    // Titel voor bijlagen
+    doc.setFontSize(20);
+    doc.text('Bijlagen', 20, 20);
+    
+    let yPos = 40; // Starting Y position for content
+    const lineHeight = 7; // Line height for text
+    
+    // 1. Leerdoelen
+    doc.setFontSize(16);
+    doc.text('Leerdoelen', 20, yPos);
+    yPos += lineHeight;
+    
+    doc.setFontSize(11);
+    const leerdoelen = [
+        'De relevantie en urgentie van zorgtechnologie voor de fysiotherapie uitleggen, gekoppeld aan maatschappelijke uitdagingen.',
+        'Concrete voorbeelden van zorgtechnologie herkennen en hun potentiële toepassing benoemen.',
+        'De belangrijkste voordelen van zorgtechnologie in de fysiotherapie benoemen.',
+        'Kritisch nadenken over de selectie en implementatie van zorgtechnologie.',
+        'Het Technology Acceptance Model (TAM) uitleggen en de link leggen met gedragsverandering.',
+        'Het V-model voor digitale competenties in de zorg uitleggen en de relevantie erkennen.',
+        'Betrouwbare bronnen voor zorgtechnologie informatie vinden.',
+        'Reflecteren op je eigen houding en vaardigheden t.o.v. zorgtechnologie.'
+    ];
+    
+    leerdoelen.forEach(doel => {
+        if (yPos > 270) { // Check if we need a new page
+            doc.addPage();
+            yPos = 20;
+        }
+        const splitDoel = doc.splitTextToSize('• ' + doel, 170);
+        doc.text(splitDoel, 20, yPos);
+        yPos += (splitDoel.length * 6);
+    });
+    
+    // 2. Reflecties
+    yPos += lineHeight;
+    doc.setFontSize(16);
+    doc.text('Reflecties', 20, yPos);
+    yPos += lineHeight;
+    
+    doc.setFontSize(11);
+    for (let i = 1; i <= 7; i++) {
+        const reflection = localStorage.getItem(`reflection_${i}`);
+        if (reflection) {
+            if (yPos > 270) {
+                doc.addPage();
+                yPos = 20;
+            }
+            doc.setFontSize(12);
+            doc.text(`Reflectie hoofdstuk ${i}:`, 20, yPos);
+            yPos += lineHeight;
+            doc.setFontSize(11);
+            const splitReflection = doc.splitTextToSize(reflection, 170);
+            doc.text(splitReflection, 20, yPos);
+            yPos += (splitReflection.length * 6) + 5;
+        }
+    }
+    
+    // 3. Multiple Choice Scores
+    yPos += lineHeight;
+    if (yPos > 250) {
+        doc.addPage();
+        yPos = 20;
+    }
+    doc.setFontSize(16);
+    doc.text('Multiple Choice Resultaten', 20, yPos);
+    yPos += lineHeight;
+    
+    doc.setFontSize(11);
+    questions.forEach((q, index) => {
+        const correct = parseInt(localStorage.getItem(`${q.id}_correct`) || 0);
+        const total = parseInt(localStorage.getItem(`${q.id}_total`) || 0);
+        if (total > 0) {
+            const score = `Vraag ${index + 1}: ${correct}/${total} correct`;
+            doc.text(score, 20, yPos);
+            yPos += lineHeight;
+        }
+    });
+    
+    // 4. Drag & Drop Scores
+    yPos += lineHeight;
+    if (yPos > 250) {
+        doc.addPage();
+        yPos = 20;
+    }
+    doc.setFontSize(16);
+    doc.text('Drag & Drop Resultaten', 20, yPos);
+    yPos += lineHeight;
+    
+    doc.setFontSize(11);
+    const dragdrop2Correct = parseInt(localStorage.getItem('dragdrop2_correct') || 0);
+    const dragdrop2Total = parseInt(localStorage.getItem('dragdrop2_total') || 0);
+    const dragdrop3Correct = parseInt(localStorage.getItem('dragdrop3_correct') || 0);
+    const dragdrop3Total = parseInt(localStorage.getItem('dragdrop3_total') || 0);
+    
+    if (dragdrop2Total > 0) {
+        doc.text(`Categoriseer de Voorbeelden: ${dragdrop2Correct}/${dragdrop2Total} correct`, 20, yPos);
+        yPos += lineHeight;
+    }
+    if (dragdrop3Total > 0) {
+        doc.text(`Koppel Technologie aan Voordelen: ${dragdrop3Correct}/${dragdrop3Total} correct`, 20, yPos);
+        yPos += lineHeight;
+    }
+
+    // Download het PDF bestand
+    doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);
+}
+
