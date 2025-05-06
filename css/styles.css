@@ -2208,3 +2208,7 @@ body.sidebar-open .floating-hamburger .hamburger-lines span:nth-child(2) {
 body.sidebar-open .floating-hamburger .hamburger-lines span:nth-child(3) {
   transform: rotate(-45deg) translate(4px, -4px);
 }
+
+.competency-assessment .btn {
+    margin-top: 2rem;
+}
