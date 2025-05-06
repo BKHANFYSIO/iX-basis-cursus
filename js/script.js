@@ -419,9 +419,13 @@ function updateAllChapterProgress() {
   // ... bestaande code voor hoofdstuk 4 t/m 8 ...
   let h4 = 0;
   if (localStorage.getItem('reflection_4')) h4++;
-  if (localStorage.getItem('mc1_correct')) h4++;
-  if (localStorage.getItem('critical_analysis')) h4++;
-  if (h4 === 3) chapterProgress[3] = 1;
+  // Verbeterde check voor critical_analysis
+  let analysis = null;
+  try {
+    analysis = JSON.parse(localStorage.getItem('critical_analysis'));
+  } catch (e) { analysis = null; }
+  if (analysis && analysis.tech && analysis.strengths && analysis.challenges && analysis.implementation) h4++;
+  if (h4 === 2) chapterProgress[3] = 1;
   else if (h4 > 0) chapterProgress[3] = 0.5;
   if (localStorage.getItem('reflection_5')) chapterProgress[4] = 1;
   let h6 = 0;
@@ -698,10 +702,11 @@ async function generatePDF() {
     doc.setTextColor(purple);
     doc.text('Leerdoelen', 20, yPos);
     yPos += lineHeight;
+    yPos += 2; // Extra ruimte vóór lijn
     doc.setDrawColor(gray);
     doc.setLineWidth(0.5);
     doc.line(20, yPos, 190, yPos);
-    yPos += 2;
+    yPos += 4; // Extra ruimte na lijn
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
@@ -730,10 +735,11 @@ async function generatePDF() {
     doc.setTextColor(purple);
     doc.text('Reflecties', 20, yPos);
     yPos += lineHeight;
+    yPos += 2; // Extra ruimte vóór lijn
     doc.setDrawColor(gray);
     doc.setLineWidth(0.5);
     doc.line(20, yPos, 190, yPos);
-    yPos += 2;
+    yPos += 4; // Extra ruimte na lijn
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
     doc.setTextColor(44, 62, 80);
@@ -767,13 +773,13 @@ async function generatePDF() {
     doc.setTextColor(purple);
     doc.text('Multiple Choice Resultaten', 20, yPos);
     yPos += lineHeight;
+    yPos += 2; // Extra ruimte vóór lijn
     doc.setDrawColor(gray);
     doc.setLineWidth(0.5);
     doc.line(20, yPos, 190, yPos);
-    yPos += 2;
+    yPos += 4; // Extra ruimte na lijn
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
-    doc.setTextColor(44, 62, 80);
     questions.forEach((q, index) => {
         const correct = parseInt(localStorage.getItem(`${q.id}_correct`));
         const total = parseInt(localStorage.getItem(`${q.id}_total`));
@@ -805,13 +811,13 @@ async function generatePDF() {
     doc.setTextColor(purple);
     doc.text('Drag & Drop Resultaten', 20, yPos);
     yPos += lineHeight;
+    yPos += 2; // Extra ruimte vóór lijn
     doc.setDrawColor(gray);
     doc.setLineWidth(0.5);
     doc.line(20, yPos, 190, yPos);
-    yPos += 2;
+    yPos += 4; // Extra ruimte na lijn
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
-    doc.setTextColor(44, 62, 80);
     // Dragdrop 2
     const dragdrop2Correct = parseInt(localStorage.getItem('dragdrop2_correct'));
     const dragdrop2Total = parseInt(localStorage.getItem('dragdrop2_total'));
@@ -861,10 +867,11 @@ async function generatePDF() {
     doc.setTextColor(purple);
     doc.text('Zelfbeoordeling Basis V-Competenties (Hoofdstuk 6)', 20, yPos);
     yPos += lineHeight;
+    yPos += 2; // Extra ruimte vóór lijn
     doc.setDrawColor(gray);
     doc.setLineWidth(0.5);
     doc.line(20, yPos, 190, yPos);
-    yPos += 2;
+    yPos += 4; // Extra ruimte na lijn
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(11);
     let selfAssessment = null;
@@ -901,6 +908,70 @@ async function generatePDF() {
         yPos += lineHeight;
     }
 
+    // 2b. Kritische Analyse
+    yPos += lineHeight;
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(15);
+    doc.setTextColor(purple);
+    doc.text('Kritische Analyse (Hoofdstuk 4)', 20, yPos);
+    yPos += lineHeight;
+    yPos += 2; // Extra ruimte vóór lijn
+    doc.setDrawColor(gray);
+    doc.setLineWidth(0.5);
+    doc.line(20, yPos, 190, yPos);
+    yPos += 4; // Extra ruimte na lijn
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(44, 62, 80);
+    let analysis = null;
+    try {
+        analysis = JSON.parse(localStorage.getItem('critical_analysis'));
+    } catch (e) { analysis = null; }
+    if (analysis && analysis.tech && analysis.strengths && analysis.challenges && analysis.implementation) {
+        const techLabels = {
+            'fysio-ai': 'Fysio.ai',
+            'blazepods': 'Blazepods',
+            'corpus-vr': 'Corpus VR',
+            'physitrack': 'Physitrack'
+        };
+        if (yPos > 270) { doc.addPage(); yPos = 20; }
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(purple);
+        doc.text('Gekozen technologie:', 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(44, 62, 80);
+        doc.text(techLabels[analysis.tech] || analysis.tech, 70, yPos);
+        yPos += lineHeight;
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(purple);
+        doc.text('Sterke punten:', 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(44, 62, 80);
+        const splitStrengths = doc.splitTextToSize(analysis.strengths, 160);
+        doc.text(splitStrengths, 20, yPos + lineHeight - 3);
+        yPos += (splitStrengths.length * 6) + 2;
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(purple);
+        doc.text('Uitdagingen:', 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(44, 62, 80);
+        const splitChallenges = doc.splitTextToSize(analysis.challenges, 160);
+        doc.text(splitChallenges, 20, yPos + lineHeight - 3);
+        yPos += (splitChallenges.length * 6) + 2;
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(purple);
+        doc.text('Implementatie:', 20, yPos);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(44, 62, 80);
+        const splitImplementation = doc.splitTextToSize(analysis.implementation, 160);
+        doc.text(splitImplementation, 20, yPos + lineHeight - 3);
+        yPos += (splitImplementation.length * 6) + 2;
+    } else {
+        doc.setTextColor('#ff9800');
+        doc.text('Geen analyse ingevuld door student', 20, yPos);
+        yPos += lineHeight;
+    }
+
     // Download het PDF bestand
     doc.save(`Certificaat_Zorgtechnologie_${studentName.replace(/\s+/g, '_')}.pdf`);
 }
@@ -924,6 +995,26 @@ function saveSelfAssessment() {
     };
     localStorage.setItem('self_assessment', JSON.stringify(assessment));
     alert('Je zelfbeoordeling is opgeslagen!');
+    updateAllChapterProgress && updateAllChapterProgress();
+}
+
+function saveAnalysis() {
+    const tech = document.getElementById('tech-choice').value;
+    const strengths = document.getElementById('strengths').value.trim();
+    const challenges = document.getElementById('challenges').value.trim();
+    const implementation = document.getElementById('implementation').value.trim();
+    if (!tech || !strengths || !challenges || !implementation) {
+        alert('Beantwoord alle vragen voordat je opslaat.');
+        return;
+    }
+    const analysis = {
+        tech,
+        strengths,
+        challenges,
+        implementation
+    };
+    localStorage.setItem('critical_analysis', JSON.stringify(analysis));
+    alert('Je analyse is opgeslagen!');
     updateAllChapterProgress && updateAllChapterProgress();
 }
 
