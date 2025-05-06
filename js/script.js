@@ -488,6 +488,12 @@ function setupSidebarNavigation() {
     chapter.addEventListener('click', function() {
       const section = parseInt(this.getAttribute('data-section'));
       showSection(section);
+      // Close sidebar on mobile after selecting a chapter
+      if (window.innerWidth <= 900) {
+        const sidebar = document.getElementById('sidebarNav');
+        if (sidebar) sidebar.classList.remove('open');
+        document.body.classList.remove('sidebar-open');
+      }
     });
   });
 }
