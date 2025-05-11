@@ -197,6 +197,21 @@ header {
   line-height: 1.2;
   text-align: center;
   margin-top: 4px;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 1.5rem;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.2rem;
+  }
 }
 
 .header-subtitle {
