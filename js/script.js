@@ -564,6 +564,79 @@ function setupSidebarHamburger() {
   });
 }
 
+function clearAllProgress() {
+    if (confirm("Weet je zeker dat je alle voortgang wilt wissen? Dit kan niet ongedaan worden gemaakt.")) {
+        // Clear reflections
+        for (let i = 1; i <= totalSections; i++) {
+            localStorage.removeItem(`reflection_${i}`);
+            const reflectionInput = document.getElementById(`reflection${i}`);
+            if (reflectionInput) reflectionInput.value = '';
+        }
+
+        // Clear MC scores
+        questions.forEach(q => {
+            localStorage.removeItem(`${q.id}_correct`);
+            localStorage.removeItem(`${q.id}_total`);
+        });
+        localStorage.removeItem('mc_correct');
+        localStorage.removeItem('mc_total');
+        // Reset all MC options and feedbacks
+        document.querySelectorAll('.mc-option').forEach(opt => {
+            opt.classList.remove('selected', 'correct', 'incorrect', 'disabled');
+            opt.style.cursor = 'pointer';
+        });
+        document.querySelectorAll('.feedback').forEach(fb => {
+            fb.textContent = '';
+            fb.className = 'feedback';
+        });
+
+        // Clear Drag & Drop scores
+        localStorage.removeItem('dragdrop2_correct');
+        localStorage.removeItem('dragdrop2_total');
+        localStorage.removeItem('dragdrop3_correct');
+        localStorage.removeItem('dragdrop3_total');
+        // Reset drag and drop feedback
+        let ddFeedback2 = document.getElementById('dragdrop2-feedback');
+        if(ddFeedback2) ddFeedback2.innerHTML = '';
+        let ddFeedback3 = document.getElementById('dragdrop3-feedback');
+        if(ddFeedback3) ddFeedback3.innerHTML = '';
+        // (Optioneel) Zet draggables terug naar hun originele container
+        document.querySelectorAll('.drag-container').forEach(container => {
+            const draggables = container.querySelectorAll('.draggable');
+            draggables.forEach(draggable => container.appendChild(draggable));
+        });
+
+        // Clear critical analysis
+        localStorage.removeItem('critical_analysis');
+        const techChoice = document.getElementById('tech-choice');
+        if (techChoice) techChoice.value = '';
+        const strengths = document.getElementById('strengths');
+        if (strengths) strengths.value = '';
+        const challenges = document.getElementById('challenges');
+        if (challenges) challenges.value = '';
+        const implementation = document.getElementById('implementation');
+        if (implementation) implementation.value = '';
+
+        // Clear self-assessment
+        localStorage.removeItem('self_assessment');
+        const assessmentSelects = document.querySelectorAll('.assessment-select');
+        assessmentSelects.forEach(select => select.value = '');
+
+        // Clear chapter progress
+        localStorage.removeItem('chapterProgress');
+
+        // Update UI
+        updateAllChapterProgress(); // This will reset circles and overall progress to 0
+        showSection(1); // Go back to the first section
+
+        // Clear student name for PDF
+        const studentNameInput = document.getElementById('student-name');
+        if (studentNameInput) studentNameInput.value = '';
+
+        alert("Alle voortgang is gewist.");
+    }
+}
+
 // --- SINGLE DOMContentLoaded Listener ---
 document.addEventListener('DOMContentLoaded', function() {
   console.log('DOM Content Loaded - Initializing all components');
@@ -575,6 +648,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Initialize interactive elements
   initializeMultipleChoice();
   initializeDragAndDrop();
+
+  // Setup clear progress button
+  const clearProgressButton = document.getElementById('clearProgressBtn');
+  if (clearProgressButton) {
+    clearProgressButton.addEventListener('click', clearAllProgress);
+  }
 
   // Set initial state
   updateSidebarProgress(); // Calculate initial progress display

@@ -2212,3 +2212,26 @@ body.sidebar-open .floating-hamburger .hamburger-lines span:nth-child(3) {
 .competency-assessment .btn {
     margin-top: 2rem;
 }
+
+.btn-clear-progress {
+    display: block;
+    width: calc(100% - 40px); /* Take padding of sidebar-nav into account */
+    margin: 15px 20px;
+    padding: 10px 15px;
+    background-color: var(--white);
+    color: var(--dark-gray); /* Subtielere tekstkleur initieel */
+    border: 2px solid var(--medium-gray); /* Subtielere rand initieel */
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(.4,2,.6,1);
+}
+
+.btn-clear-progress:hover {
+    background-color: #FFF0F0; /* Lichte rood/roze achtergrond */
+    color: #D32F2F; /* Sterkere rode tekstkleur */
+    border-color: #D32F2F; /* Sterkere rode randkleur */
+    box-shadow: 0 4px 16px rgba(211,47,47,0.12);
+    transform: scale(1.04);
+}
